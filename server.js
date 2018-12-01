@@ -34,6 +34,11 @@ app.get('/ads', function(req, res) {
    res.sendFile(__dirname + '/data/ads.json');
 });
 
+app.get('/ad/:id', function(req, res) {
+   console.log(req.method, req.url);
+   res.sendFile(__dirname + '/data/ads/ad-'+req.params.id+'.json');
+});
+
 
 app.post('/users', function (req, res) {
 
@@ -70,6 +75,18 @@ app.post('/ads', function (req, res) {
   });
 
   fs.writeFileSync("data/ads.json", JSON.stringify(adsData),'utf8');
+
+  var adData={
+    "title":req.body.title,
+    "year":req.body.year,
+    "country":req.body.country,
+    "description":req.body.description,
+    "price":req.body.price,
+    "user":req.body.user,
+    "id":req.body.id
+  };
+
+  fs.writeFileSync("data/ads/ad-"+req.body.id+".json", JSON.stringify(adData),'utf8');
 
 });
 

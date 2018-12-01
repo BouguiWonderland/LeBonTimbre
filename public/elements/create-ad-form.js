@@ -230,7 +230,7 @@ export class createpostForm extends PolymerElement {
 
       InputPrice: {
         type: String,
-        value: "Prix de mise en vente"
+        value: "Prix de mise en vente (en euros)"
       },
 
       /**
@@ -392,4 +392,4 @@ function createCookie(name,value,days) {
 	document.cookie = name+"="+value+expires+"; path=/";
 }
 
-window.customElements.define('create-post-form', createpostForm);
+window.customElements.define('create-ad-form', createpostForm);

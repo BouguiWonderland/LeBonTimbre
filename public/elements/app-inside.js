@@ -7,8 +7,9 @@ import '/@polymer/app-route/app-location.js';
 
 import '/@granite-elements/granite-bootstrap/granite-bootstrap.js';
 
-import './create-post-form.js';
+import './create-ad-form.js';
 import './ads-list.js';
+import './ad-detail.js';
 
 
 export class AppInside extends PolymerElement {
@@ -58,16 +59,17 @@ export class AppInside extends PolymerElement {
       <app-location route="{{route}}" use-hash-as-path></app-location>
 
       <div class="topnav">
-         <a id="accueilBtn" on-click="_activate1" class="active" href="#/home/ads-list">Accueil</a>
-         <a id="createBtn" on-click="_activate2" href="#/home/create-ad">Créer annonce</a>
-         <a id="profileBtn"on-click="_activate3" href="#contact">Mon profil</a>
-         <a id="aboutBtn" on-click="_activate4" href="#about">Aide</a>
+         <a id="accueilBtn" class="active" href="#/home/ads-list">Accueil</a>
+         <a id="createBtn" href="#/home/create-ad">Créer annonce</a>
+         <a id="profileBtn"href="#/home/profile">Mon profil</a>
+         <a id="aboutBtn" href="#/home/about">Aide</a>
          <b id="userdata" >[[userdata]]</a>
          <paper-button on-click="_deconnect" disabled="[[loading]]" id="createAdBtn" raised class="indigo">Déconnexion</paper-button>
       </div>
 
       <app-route route="[[route]]" pattern="/home/ads-list" active="{{homeActive}}"></app-route>
       <app-route route="[[route]]" pattern="/home/create-ad" active="{{createAdActive}}"></app-route>
+      <app-route route="[[route]]" pattern="/home/ad/:id" data="{{adId}}" active="{{adActive}}"></app-route>
 
 
       <template is="dom-if" if="{{homeActive}}">
@@ -75,7 +77,11 @@ export class AppInside extends PolymerElement {
       </template>
 
       <template is="dom-if" if="{{createAdActive}}">
-        <create-post-form title="Créer annonce"></create-post-form>
+        <create-ad-form title="Créer annonce"></create-ad-form>
+      </template>
+
+      <template is="dom-if" if="{{adActive}}">
+        <ad-detail id="[[adId.id]]"></ad-detail>
       </template>
     `;
   }

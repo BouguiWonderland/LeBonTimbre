@@ -1,6 +1,6 @@
-import { PolymerElement, html } from 'polymer/polymer/polymer-element.js';
+import { PolymerElement, html } from '/@polymer/polymer/polymer-element.js';
 
-import 'granite-elements/granite-bootstrap/granite-bootstrap';
+import '/@granite-elements/granite-bootstrap/granite-bootstrap.js';
 
 export class AdDetail extends PolymerElement {
 
@@ -9,10 +9,13 @@ export class AdDetail extends PolymerElement {
       <style include="granite-bootstrap"></style>
       <style>
         .ad {
-          margin: 10px;
-          padding: 10px;
+          width:800px;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 100px;
+          padding: 20px;
           border: solid 1px black;
-          min-height: 150px;
+          min-height: 200px;
         }
         .back {
           width: 50px;
@@ -47,10 +50,9 @@ export class AdDetail extends PolymerElement {
       </style>
 
       <div id="[[ad.id]]" class="ad clearfix">
-        <a href="#/ads"><img class="pull-right back" src="/img/back.png"></a>
+        <a href="#/home/ads-list"><img class="pull-right back" alt="Retour à la liste"></a>
         <h1 class="name">[[ad.title]]</h1>
-        <img class="pull-right img" src="/data/[[ad.img]]">
-        <p class="description">[[ad.description]]</p>
+        <p class="description">Description de la pièce en vente : \n[[ad.description]]</p>
 
         <ul class="specs">
           <li>
@@ -95,10 +97,12 @@ export class AdDetail extends PolymerElement {
     };
   }
 
+
+
+
   async _onIdChange() {
-    const url = `/data/ads/details/${this.id}.json`;
     try {
-      const response = await fetch(url);
+      const response = await fetch('http://localhost:3000/ad/'+this.id);
       this.ad = await response.json();
     }
     catch (err) {

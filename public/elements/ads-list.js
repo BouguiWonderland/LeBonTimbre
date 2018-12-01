@@ -7,7 +7,6 @@ import '/@polymer/paper-styles/shadow.js'
 import '/@polymer/paper-styles/typography.js'
 import '/@polymer/paper-styles/color.js'
 
-import {createpostForm} from './create-post-form.js';
 import {AdListItem} from './ad-list-item.js';
 
 

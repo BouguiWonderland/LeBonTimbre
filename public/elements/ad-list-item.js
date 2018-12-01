@@ -26,9 +26,9 @@ export class AdListItem extends PolymerElement {
         }
       </style>
       <div id="[[id]]" class="ad clearfix">
-        <a href="#/ad/[[id]]"><h2 class="el-name">[[name]]</h2></a>
+        <a href="#/home/ad/[[id]]"><h2 class="el-name">[[name]]</h2></a>
         <p class="el-description">[[description]]</p>
-        <p class="float-right el-price">Prix: [[price]]</p>
+        <p class="float-right el-price">Prix: [[price]]€</p>
       </div>
     `;
   }
