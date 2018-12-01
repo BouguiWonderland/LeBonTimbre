@@ -123,16 +123,6 @@ export class createpostForm extends PolymerElement {
       }
     </style>
 
-    <div class="topnav">
-       <a href="http://localhost:3000/homepage.html">Accueil</a>
-       <a class="active" href="http://localhost:3000/add_ad.html">Créer annonce</a>
-       <a href="#contact">Mon profil</a>
-       <a href="#about">Aide</a>
-       <b id="userdata" >[[userdata]]</a>
-       <paper-button on-click="_deconnect" disabled="[[loading]]" id="createBtn" raised class="indigo">Déconnexion</paper-button>
-    </div>
-
-
     <p align="center">
     <div id="createpostForm">
         <paper-progress disabled="[[!loading]]" indeterminate></paper-progress>
@@ -149,8 +139,8 @@ export class createpostForm extends PolymerElement {
                 error-message="[[ErrMsg]]"></paper-input>
             <paper-input id="price" value="{{price}}" disabled="[[loading]]" type="text" label="[[InputPrice]]" required
                 error-message="[[ErrMsg]]"></paper-input>
-            <paper-input id="imgload"  disabled="[[loading]]" type="file"  label="Ajouter image" on-value-changed="_onChange" required
-                error-message="[[ErrMsg]]"></paper-input>
+            <input id="imgload"  disabled="[[loading]]" type="file" accept="image/*"  label="Ajouter image" on-value-changed="_onChange" required
+                error-message="[[ErrMsg]]"></input>
             <img id="outImage" alt="Image de l'annonce">
             <paper-button on-click="_create" disabled="[[loading]]" id="createpostBtn" raised class="indigo">[[createpostBtnText]]</paper-button>
         </div>
@@ -303,7 +293,7 @@ export class createpostForm extends PolymerElement {
         if(this.ads[i].id>idMax)idMax=i;
       }
 
-      if(this.ads.length>0 && idMax==0)idMax++;
+      idMax++;
 
       let adData ={
         "title":this.titleP,
@@ -330,14 +320,15 @@ export class createpostForm extends PolymerElement {
       xhr.send(data);
 
       this.dispatchEvent(new CustomEvent('register-btn-click', { bubbles: true, composed: true }));
-      document.location.href="http://localhost:3000/homepage.html";
+      document.location.href="#/home/ads-list";
     }
   }
 
-  _onChange (evt){
-    console.log("inside");
+  _onChange (){
+    document.getElementById("outImage").src =this.$.imgload.value;
+    /*console.log(evt);
     var tgt = evt.target||window.event.srcElement,
-       files = evt.files;
+       files = this.$.imgload.value;
        console.log(files);
     // FileReader support
     if (FileReader && files && files.length) {
@@ -354,7 +345,19 @@ export class createpostForm extends PolymerElement {
     else {
         // fallback -- perhaps submit the input to an iframe and temporarily store
         // them on the server until the user's session ends.
-    }
+    }*/
+
+  /*  var selectedFile = evt.target.files[0];
+    var reader = new FileReader();
+
+    var imgtag = document.getElementById("outImage");
+    imgtag.title = selectedFile.name;
+
+    reader.onload = function(event) {
+    imgtag.src = event.target.result;
+  };
+
+  reader.readAsDataURL(selectedFile);*/
 }
 
   _deconnect(){

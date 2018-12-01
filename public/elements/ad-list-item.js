@@ -13,9 +13,10 @@ export class AdListItem extends PolymerElement {
         .ad {
           margin: 10px;
           padding: 10px;
-          border: solid 1px black;
-          border-radius: 10px;
+          border: solid 2px orange;
           min-height: 150px;
+          background: var( white);
+          @apply --shadow-elevation-12dp;
         }
         .el-img {
           max-height: 100px;
@@ -25,7 +26,7 @@ export class AdListItem extends PolymerElement {
         }
       </style>
       <div id="[[id]]" class="ad clearfix">
-        <a><h2 class="el-name">[[name]]</h2></a>
+        <a href="#/ad/[[id]]"><h2 class="el-name">[[name]]</h2></a>
         <p class="el-description">[[description]]</p>
         <p class="float-right el-price">Prix: [[price]]</p>
       </div>

@@ -250,7 +250,7 @@ class PaperLoginscreen extends PolymerElement {
 
     if (this.$.userInput.validate() && this.$.passInput.validate() && c==2) {
       this.dispatchEvent(new CustomEvent('login-btn-click', { bubbles: true, composed: true }));
-      document.location.href="http://localhost:3000/home";
+      document.location.href="#/home/ads-list";
       createCookie("userConnected",this.username,1/48);
       console.log("Found");
 
@@ -262,7 +262,7 @@ class PaperLoginscreen extends PolymerElement {
   }
 
   _register(){
-    document.location.href="http://localhost:3000/register";
+    document.location.href="#/register";
   }
 
 }

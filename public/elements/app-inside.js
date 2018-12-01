@@ -1,26 +1,27 @@
-import { html, PolymerElement } from '/@polymer/polymer/polymer-element.js';
 
-import '/@polymer/paper-button/paper-button.js'
-import '/@polymer/paper-input/paper-input.js'
-import '/@polymer/paper-progress/paper-progress.js'
-import '/@polymer/paper-styles/shadow.js'
-import '/@polymer/paper-styles/typography.js'
-import '/@polymer/paper-styles/color.js'
+import { PolymerElement, html } from '/@polymer/polymer/polymer-element.js';
 
-import {createpostForm} from './create-post-form.js';
-import {AdListItem} from './ad-list-item.js';
+import '/@polymer/polymer/lib/elements/dom-if.js';
+import '/@polymer/app-route/app-route.js';
+import '/@polymer/app-route/app-location.js';
+
+import '/@granite-elements/granite-bootstrap/granite-bootstrap.js';
+
+import './create-post-form.js';
+import './ads-list.js';
 
 
-class Homepagescreen extends PolymerElement {
+export class AppInside extends PolymerElement {
+
   static get template() {
     return html`
-    <style>
+      <style include="granite-bootstrap">
       .topnav {
         background-color: #333;
         overflow: hidden;
       }
 
-/* Style the links inside the navigation bar */
+  /* Style the links inside the navigation bar */
       .topnav a {
         float: left;
         margin-top: auto;
@@ -41,77 +42,72 @@ class Homepagescreen extends PolymerElement {
         font-size: 17px;
       }
 
-/* Change the color of links on hover */
+  /* Change the color of links on hover */
       .topnav a:hover {
         background-color: #ddd;
         color: black;
       }
 
-/* Add a color to the active/current link */
+  /* Add a color to the active/current link */
       .topnav a.active {
         background-color: #4CAF50;
         color: white;
       }
+      </style>
 
-      .ads{
-        width:400px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-    </style>
-
+      <app-location route="{{route}}" use-hash-as-path></app-location>
 
       <div class="topnav">
-         <a class="active" href="#home">Accueil</a>
-         <a  href="http://localhost:3000/add_ad.html">Créer annonce</a>
-         <a href="#contact">Mon profil</a>
-         <a href="#about">Aide</a>
+         <a id="accueilBtn" on-click="_activate1" class="active" href="#/home/ads-list">Accueil</a>
+         <a id="createBtn" on-click="_activate2" href="#/home/create-ad">Créer annonce</a>
+         <a id="profileBtn"on-click="_activate3" href="#contact">Mon profil</a>
+         <a id="aboutBtn" on-click="_activate4" href="#about">Aide</a>
          <b id="userdata" >[[userdata]]</a>
-         <paper-button on-click="_deconnect" disabled="[[loading]]" id="createBtn" raised class="indigo">Déconnexion</paper-button>
+         <paper-button on-click="_deconnect" disabled="[[loading]]" id="createAdBtn" raised class="indigo">Déconnexion</paper-button>
       </div>
 
-      <div class="col-md-9">
-        <div class="ads">
-          <template
-              id="adList" is="dom-repeat"
-              items="[[ads]]">
-            <ad-list-item
-                id="[[item.id]]"
-                name="[[item.title]]"
-                description="[[item.description]]"
-                price="[[item.price]]">
-            </ad-list-item>
-          </template>
-        </div>
-        <div>Nombre d'annonces postées : [[currentAds]]</div>
-      </div>
+      <app-route route="[[route]]" pattern="/home/ads-list" active="{{homeActive}}"></app-route>
+      <app-route route="[[route]]" pattern="/home/create-ad" active="{{createAdActive}}"></app-route>
 
 
+      <template is="dom-if" if="{{homeActive}}">
+        <ads-list title="LeBonTimbre - Accueil"></ads-list>
+      </template>
 
-  `;
+      <template is="dom-if" if="{{createAdActive}}">
+        <create-post-form title="Créer annonce"></create-post-form>
+      </template>
+    `;
   }
+
+
   static get properties() {
     return {
-      /**
-      * Title of the homepagescreen
-      */
-      title: String,
-
-      userdata: String,
-
-      loading: {
+      adListActive: {
         type: Boolean,
-        value: false
       },
+      adIdActive: {
+        type: Boolean,
+      },
+      adId: {
+        tpe: String,
+      },
+      route: {
+        type: Object,
+      },
+    };
+  }
 
-      currentAds: String
+  connectedCallback() {
+    super.connectedCallback();
 
+    if (!this.route.path) {
+      this.route = { ... this.route, path: '/login' }
     }
   }
 
   constructor() {
     super();
-    this.ads=[];
     this.username=readCookie("userConnected");
     if(!this.username)document.location.href="http://localhost:3000/";
 
@@ -125,10 +121,6 @@ class Homepagescreen extends PolymerElement {
       console.log('fetch');
       this.users = await aresponse.json();
 
-      const response = await fetch('http://localhost:3000/ads');
-
-      this.ads = await response.json();
-      this.currentAds=this._getCurrentAds();
       let a;
       let i;
       for(i=0;i<this.users.length;i++){
@@ -148,10 +140,6 @@ class Homepagescreen extends PolymerElement {
     createCookie("userFirstame","",-1);
     createCookie("Name","",-1);
     document.location.href="http://localhost:3000/";
-  }
-
-  _getCurrentAds() {
-    return this.ads.length;
   }
 
 }
@@ -178,4 +166,5 @@ function readCookie(name) {
 	return null;
 }
 
-window.customElements.define('home-page', Homepagescreen);
+
+customElements.define('app-inside', AppInside);

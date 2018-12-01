@@ -282,7 +282,7 @@ class Registerscreen extends PolymerElement {
       xhr.send(data);
 
       this.dispatchEvent(new CustomEvent('register-btn-click', { bubbles: true, composed: true }));
-      document.location.href="http://localhost:3000/index.html";
+      document.location.href="#/login";
 
 
     }

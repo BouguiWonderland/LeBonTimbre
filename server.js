@@ -16,7 +16,7 @@ app.get('/', function(req, res) {
 
 app.get('/register', function(req, res) {
    console.log(req.method, req.url);
-   res.sendFile(__dirname + '/public/register.html');
+   res.sendFile(__dirname + '/public/index.html');
 });
 
 app.get('/home', function(req, res) {
