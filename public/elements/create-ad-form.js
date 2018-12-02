@@ -131,13 +131,13 @@ export class createpostForm extends PolymerElement {
             <div id="errorMsg">[[errorMsg]]</div>
             <paper-input id="titleP" value="{{titleP}}" disabled="[[loading]]" type="text" label="[[InputTitle]]" required
                 error-message="[[ErrMsg]]"></paper-input>
-            <paper-input id="year" value="{{year}}" disabled="[[loading]]" type="text" label="[[InputYear]]" required
+            <paper-input id="year" value="{{year}}" disabled="[[loading]]" type="number" label="[[InputYear]]" required
                 error-message="[[ErrMsg]]"></paper-input>
             <paper-input id="country" value="{{country}}" disabled="[[loading]]" type="text" label="[[InputCountry]]" required
                 error-message="[[ErrMsg]]"></paper-input>
             <paper-input id="description" value="{{description}}" disabled="[[loading]]" type="text" label="[[InputDescription]]" required
                 error-message="[[ErrMsg]]"></paper-input>
-            <paper-input id="price" value="{{price}}" disabled="[[loading]]" type="text" label="[[InputPrice]]" required
+            <paper-input id="price" value="{{price}}" disabled="[[loading]]" type="number" label="[[InputPrice]]" required
                 error-message="[[ErrMsg]]"></paper-input>
             <input id="imgload"  disabled="[[loading]]" type="file" accept="image/*"  label="Ajouter image" on-value-changed="_onChange" required
                 error-message="[[ErrMsg]]"></input>
@@ -178,7 +178,7 @@ export class createpostForm extends PolymerElement {
       * Content of the password field
       */
       year: {
-        type: String,
+        type: Number,
         notify: true
       },
 
@@ -193,7 +193,7 @@ export class createpostForm extends PolymerElement {
       },
 
       price: {
-        type: String,
+        type: Number,
         notify: true
       },
 
@@ -286,14 +286,26 @@ export class createpostForm extends PolymerElement {
 
   _create(){
     if(this.$.titleP.validate() && this.$.year.validate() && this.$.country.validate() && this.$.description.validate() && this.$.price.validate()){
-      let idMax=0;
+      let id=0;
+      let lowId=false;
+      let tabId=[];
+      if(this.ads.length!=0){
+        for(let i=0;i<this.ads.length;i++){
+          if(this.ads[i].id>=this.ads.length){
+            lowId=true;
+          }
+          tabId.push(this.ads[i].id);
+        }
 
-      for(let i=0;i<this.ads.length;i++){
-        console.log(this.ads[i].id);
-        if(this.ads[i].id>idMax)idMax=i;
+        for(let i=0;i<this.ads.length;i++){
+          if(!tabId.includes(i)){
+            id=i;
+            break;
+          }
+        }
       }
 
-      idMax++;
+
 
       let adData ={
         "title":this.titleP,
@@ -302,7 +314,7 @@ export class createpostForm extends PolymerElement {
         "description":this.description,
         "price":this.price,
         "user":this.username,
-        "id":idMax
+        "id":id
       }
 
 

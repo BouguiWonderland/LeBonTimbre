@@ -39,6 +39,20 @@ app.get('/ad/:id', function(req, res) {
    res.sendFile(__dirname + '/data/ads/ad-'+req.params.id+'.json');
 });
 
+app.get('/ad/rm/:id', function(req, res) {
+   console.log(req.method, req.url);
+   var data = fs.readFileSync('data/ads.json');
+   console.log(data);
+   var adsData = JSON.parse(data);
+   var newData=[];
+   for(let i=0;i<adsData.length;i++){
+     if(adsData[i].id!=req.params.id){
+       newData.push(adsData[i]);
+     }
+   }
+   fs.writeFileSync("data/ads.json", JSON.stringify(newData),'utf8');
+});
+
 
 app.post('/users', function (req, res) {
 
