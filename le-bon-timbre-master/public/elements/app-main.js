@@ -23,11 +23,8 @@ export class AppMain extends PolymerElement {
       <app-route route="[[route]]" pattern="/register" active="{{regScreenActive}}"></app-route>
       <app-route route="[[route]]" pattern="/home" active="{{homeActive}}"></app-route>
 
-
-      <app-route route="[[route]]" pattern="/ad/:id" data="{{adId}}" active="{{adIdActive}}"></app-route>
-
       <template is="dom-if" if="{{logScreenActive}}">
-        <paper-loginscreen title="LeBonTimbre - Connexion"></paper-loginscreen>
+        <paper-loginscreen title="LeBonTimbre - Connexion" isvisible="[[adId]]"></paper-loginscreen>
       </template>
 
       <template is="dom-if" if="{{regScreenActive}}">
@@ -50,8 +47,12 @@ export class AppMain extends PolymerElement {
       adIdActive: {
         type: Boolean,
       },
+      logScreenActive: {
+        type: Boolean,
+      },
       adId: {
-        tpe: String,
+        type: String,
+        value:"0"
       },
       route: {
         type: Object,

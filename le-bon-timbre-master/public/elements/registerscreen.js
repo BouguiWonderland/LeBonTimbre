@@ -97,7 +97,7 @@ class Registerscreen extends PolymerElement {
             <paper-input id="emailInput" value="{{email}}" disabled="[[loading]]" type="text" label="[[emailInputLabel]]" required
                 error-message="[[InputErrMsg]]"></paper-input>
 
-            <paper-button on-click="_createAccount" disabled="[[loading]]" id="createBtn" raised class="indigo">[[createBtnText]]</paper-button>
+            <paper-button on-click="_submit" disabled="[[loading]]" id="createBtn" raised class="indigo">[[createBtnText]]</paper-button>
             <slot name=""></slot>
         </div>
     </div>
@@ -202,23 +202,55 @@ class Registerscreen extends PolymerElement {
 
   constructor() {
     super();
-
-    this.users = [];
-    this._getData();
-
   }
 
-  async _getData() {
-    try {
-      const response = await fetch('http://localhost:3000/users');
-      console.log('fetch');
-      this.users = await response.json();
-      console.log(this.users);
-    }
-    catch (err) {
-      console.log('fetch failed', err);
-    }
+  async _submit() {
+    if (this.$.usernameInput.validate() && this.$.passInput.validate() && this.$.passConfInput.validate()
+      &&  this.$.firstnameInput.validate() && this.$.nameInput.validate() && this.$.emailInput.validate()) {
+
+      if(this.password!=this.passwordConf){
+        this.errorMsg="La confirmation du mot de passe n'est pas bonne !";
+        return;
+      }
+
+      if(!this.email.includes("@") || !this.email.includes(".")){
+        this.errorMsg="Veuillez saisir une adresse mail valide !";
+        return;
+      }
+
+      try {
+
+        let userData ={
+          "username":this.username,
+          "password":this.password,
+          "firstname":this.firstname,
+          "name":this.name,
+          "email":this.email
+        }
+
+        let request={
+           method:'POST',
+           headers: {'Accept': 'application/json,text/plain',
+                      'Content-Type': 'application/json'
+                    },
+           body: JSON.stringify(userData)
+        }
+
+        const response = await fetch('http://localhost:3000/submit/registration/',request);
+        let isOk = await response.text();
+        if(isOk=="true"){
+          this.dispatchEvent(new CustomEvent('register-btn-click', { bubbles: true, composed: true }));
+          document.location.href="#/login";
+        }
+        else{
+          this.errorMsg="Pseudo déjà pris";
+        }
+      }
+      catch (err) {
+        console.log('fetch failed', err);
+      }
   }
+}
 
   ready() {
     super.ready();
@@ -230,62 +262,6 @@ class Registerscreen extends PolymerElement {
       }
     });
 
-  }
-
-  _createAccount() {
-
-      if (this.$.usernameInput.validate() && this.$.passInput.validate() && this.$.passConfInput.validate()
-    &&  this.$.firstnameInput.validate() && this.$.nameInput.validate() && this.$.emailInput.validate()) {
-
-      //Vérification que le pseudo n'est pas déjà utilisé
-      let c=0;
-      for(let i=0;i<this.users.length;i++){
-        if(this.users[i].username==this.username)c++;
-        if(c==1){
-          this.errorMsg="Pseudo déjà pris";
-          return;
-        }
-        c=0;
-      }
-
-      //Vérification que la confirmation du mot de passe est bonne
-      if(this.password!=this.passwordConf){
-        this.errorMsg="La confirmation du mot de passe n'est pas bonne !";
-        return;
-      }
-
-      if(!this.email.includes("@") || !this.email.includes(".")){
-        this.errorMsg="Veuillez saisir une adresse mail valide !";
-        return;
-      }
-
-      let userData ={
-        "username":this.username,
-        "password":this.password,
-        "firstname":this.firstname,
-        "name":this.name,
-        "email":this.email
-      }
-
-
-      var xhr = new XMLHttpRequest();
-      var url="http://localhost:3000/users"
-      xhr.open("POST", url, true);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var json = JSON.parse(xhr.responseText);
-            //console.log(json.email + ", " + json.password);
-        }
-      };
-      var data = JSON.stringify(userData);
-      xhr.send(data);
-
-      this.dispatchEvent(new CustomEvent('register-btn-click', { bubbles: true, composed: true }));
-      document.location.href="#/login";
-
-
-    }
   }
 
 

@@ -201,6 +201,11 @@ class PaperLoginscreen extends PolymerElement {
       registerBtnText: {
         type: String,
         value: "S'inscrire"
+      },
+
+      isvisible: {
+        type: String,
+        observer: "_onChanged"
       }
     }
   }
@@ -208,26 +213,49 @@ class PaperLoginscreen extends PolymerElement {
   constructor() {
     super();
 
-    this.users = [];
-    this._getData();
 
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    console.log("ici");
-    this._getData();
-  }
 
-  async _getData() {
-    try {
-      const response = await fetch('http://localhost:3000/users');
-      console.log('fetch');
-      this.users = await response.json();
-      console.log(this.users);
-    }
-    catch (err) {
-      console.log('fetch failed', err);
+
+
+  async _connect() {
+    if (this.$.userInput.validate() && this.$.passInput.validate()) {
+      let user ={
+        "username":this.username,
+        "password":this.password,
+      }
+      let isOk;
+
+      let request={
+         method:'POST',
+         headers: {'Accept': 'application/json,text/plain',
+                    'Content-Type': 'application/json'
+                  },
+         body: JSON.stringify(user)
+      }
+
+      try {
+        const rep = await fetch('http://localhost:3000/connect',request);
+
+        isOk = await rep.text();
+        console.log(isOk);
+
+        if(isOk=="true"){
+          this.dispatchEvent(new CustomEvent('login-btn-click', { bubbles: true, composed: true }));
+          document.location.href="#/home/ads-list";
+          createCookie("userConnected",this.username,1/48);
+          console.log("Found");
+        }
+          else{
+            console.log("Not found");
+            this.errorMsg = "Pseudo ou mot de passe invalide"
+          }
+        }
+      catch (err) {
+        console.log('fetch failed', err);
+        this.errorMsg = "Serveur injoignable, rééssayez svp"
+      }
     }
   }
 
@@ -245,25 +273,17 @@ class PaperLoginscreen extends PolymerElement {
 
   _login() {
 
-    let c=0;
-    for(let i=0;i<this.users.length;i++){
-      if(this.users[i].username==this.username)c++;
-      if(this.users[i].password==this.password)c++;
-      if(c==2)break;
-      c=0;
-    }
-
-
-    if (this.$.userInput.validate() && this.$.passInput.validate() && c==2) {
+    if (this.$.userInput.validate() && this.$.passInput.validate()) {
+      if(this._connect()=="true"){
       this.dispatchEvent(new CustomEvent('login-btn-click', { bubbles: true, composed: true }));
       document.location.href="#/home/ads-list";
       createCookie("userConnected",this.username,1/48);
       console.log("Found");
-
-    }
-    else{
-      console.log("Not found");
-      this.errorMsg = "Pseudo ou mot de passe invalide"
+      }
+      else{
+        console.log("Not found");
+        this.errorMsg = "Pseudo ou mot de passe invalide"
+      }
     }
   }
 

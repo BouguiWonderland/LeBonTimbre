@@ -73,7 +73,7 @@ export class AppInside extends PolymerElement {
 
 
       <template is="dom-if" if="{{homeActive}}">
-        <ads-list title="LeBonTimbre - Accueil"></ads-list>
+        <ads-list title="LeBonTimbre - Accueil" isVisible="{{homeActive}}"></ads-list>
       </template>
 
       <template is="dom-if" if="{{createAdActive}}">
@@ -123,18 +123,14 @@ export class AppInside extends PolymerElement {
 
   async _getData() {
     try {
-      const aresponse = await fetch('http://localhost:3000/users');
+      const aresponse = await fetch('http://localhost:3000/user/'+this.username);
       console.log('fetch');
-      this.users = await aresponse.json();
+      this.user = await aresponse.json();
 
-      let a;
-      let i;
-      for(i=0;i<this.users.length;i++){
-        if(this.users[i].username==this.username)a=i;
-      }
-      createCookie("userFirstname",this.users[a].firstname,1);
-      createCookie("Name",this.users[a].name,1);
-      this.userdata="Bienvenue "+this.users[a].firstname+" "+this.users[a].name+", alias "+this.username+" !";
+
+      createCookie("userFirstname",this.user.firstname,1);
+      createCookie("Name",this.user.name,1);
+      this.userdata="Bienvenue "+this.user.firstname+" "+this.user.name+", alias "+this.username+" !";
     }
     catch (err) {
       console.log('fetch failed', err);

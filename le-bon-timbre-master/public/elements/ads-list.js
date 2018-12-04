@@ -131,9 +131,20 @@ class AdsList extends PolymerElement {
       currentAds: {
         type: String,
         computed: '_getCurrentAds(ads,filterText)',
+      },
+
+      isvisible: {
+        type: Boolean,
+        observer: '_onChanged' ,
       }
     }
   }
+
+  _onChanged(newValue, oldValue) {
+    if(newValue){
+        this._getData();
+    }
+  };
 
   constructor() {
     super();
@@ -152,7 +163,7 @@ class AdsList extends PolymerElement {
     this.username=readCookie("userConnected");
     if(!this.username)document.location.href="http://localhost:3000/";
 
-    this._getData();
+
 
   }
 
