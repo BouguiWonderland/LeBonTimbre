@@ -132,7 +132,9 @@ app.post('/ads', function (req, res) {
     "description":req.body.description,
     "price":req.body.price,
     "user":req.body.user,
-    "id":req.body.id
+    "id":req.body.id,
+    "latitude":req.body.latitude,
+    "longitude":req.body.longitude
   });
 
   fs.writeFileSync("data/ads.json", JSON.stringify(adsData),'utf8');
@@ -144,7 +146,9 @@ app.post('/ads', function (req, res) {
     "description":req.body.description,
     "price":req.body.price,
     "user":req.body.user,
-    "id":req.body.id
+    "id":req.body.id,
+    "latitude":req.body.latitude,
+    "longitude":req.body.longitude
   };
 
   fs.writeFileSync("data/ads/ad-"+req.body.id+".json", JSON.stringify(adData),'utf8');

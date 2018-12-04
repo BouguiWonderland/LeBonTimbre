@@ -8,6 +8,10 @@ export class AdDetail extends PolymerElement {
     return html`
       <style include="granite-bootstrap"></style>
       <style>
+        leaflet-map{
+          height:300px;
+          width:100%;
+        }
         .ad {
           width:800px;
           margin-left: auto;
@@ -16,6 +20,7 @@ export class AdDetail extends PolymerElement {
           padding: 20px;
           border: solid 1px black;
           min-height: 200px;
+          background: #FFFFFF;
         }
         .back {
           width: 50px;
@@ -61,7 +66,8 @@ export class AdDetail extends PolymerElement {
       <div id="[[ad.id]]" class="ad clearfix">
       <div id="top">
         <a id="back" href="#/home/ads-list">
-          <img class="pull-right back" alt="Retour à la liste">
+          <img class="pull-right back" src="pictures/backIcon.png" alt="Retour à la liste image">
+          Retour à la liste
         </a>
         <paper-button on-click="_suppress" disabled="[[isCreatorLogged]]" id="suppress" raised class="indigo">Supprimer mon annonce</paper-button>
       </div>
@@ -94,6 +100,16 @@ export class AdDetail extends PolymerElement {
             </dl>
           </li>
         </ul>
+        <div id="map">
+          <leaflet-map longitude=[[ad.longitude]] latitude=[[ad.latitude]] zoom="14">
+            <leaflet-marker longitude=[[ad.longitude]] latitude=[[ad.latitude]]>
+              marker
+              </leaflet-marker>
+              <leaflet-circle longitude=[[ad.longitude]] latitude=[[ad.latitude]] radius="300">
+              circle
+              </leaflet-circle>
+          </leaflet-map>
+        </div>
       </div>
     `;
   }

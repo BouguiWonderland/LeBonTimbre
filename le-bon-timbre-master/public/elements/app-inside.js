@@ -59,7 +59,7 @@ export class AppInside extends PolymerElement {
       <app-location route="{{route}}" use-hash-as-path></app-location>
 
       <div class="topnav">
-         <a id="accueilBtn" class="active" href="#/home/ads-list">Accueil</a>
+         <a id="accueilBtn"  href="#/home/ads-list">Accueil</a>
          <a id="createBtn" href="#/home/create-ad">Créer annonce</a>
          <a id="profileBtn"href="#/home/profile">Mon profil</a>
          <a id="aboutBtn" href="#/home/about">Aide</a>

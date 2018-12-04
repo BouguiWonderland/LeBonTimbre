@@ -16,13 +16,13 @@ class AdsList extends PolymerElement {
     <style>
 
       #sortBar {
-          width: 600px;
+          width: 100%;
           height: 50px;
           margin-left: auto;
           margin-right: auto;
           margin-top: 20px;
 
-          background: orange;
+          background: #4CAF50;
           @apply --shadow-elevation-2dp;
       }
 
@@ -30,13 +30,12 @@ class AdsList extends PolymerElement {
           margin-top: 10px;
           margin-bottom: 10px;
           margin-left: 10px;
+          margin-right: 10px;
       }
       #search {
         float:left;
         height:28px;
       }
-
-
 
       #sorting {
         float:right;
@@ -53,9 +52,8 @@ class AdsList extends PolymerElement {
         margin-left: 5px;
       }
 
-
       .ads{
-        width:400px;
+        width:45%;
         margin-left: auto;
         margin-right: auto;
       }

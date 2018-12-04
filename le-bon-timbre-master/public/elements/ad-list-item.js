@@ -13,9 +13,9 @@ export class AdListItem extends PolymerElement {
         .ad {
           margin: 10px;
           padding: 10px;
-          border: solid 2px orange;
+          border: solid 2px #4CAF50;
           min-height: 150px;
-          background: var( white);
+          background: #FFFFFF;
           @apply --shadow-elevation-12dp;
         }
         .el-img {
