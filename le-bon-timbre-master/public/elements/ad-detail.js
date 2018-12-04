@@ -8,6 +8,10 @@ export class AdDetail extends PolymerElement {
     return html`
       <style include="granite-bootstrap"></style>
       <style>
+        leaflet-map{
+          height:300px;
+          width:100%;
+        }
         .ad {
           width:800px;
           margin-left: auto;
@@ -94,6 +98,16 @@ export class AdDetail extends PolymerElement {
             </dl>
           </li>
         </ul>
+        <div id="map">
+          <leaflet-map longitude="-4.620404" latitude="48.381438" zoom="15">
+            <leaflet-marker longitude="-4.620404" latitude="48.381438">
+              I am a marker
+              </leaflet-marker>
+              <leaflet-circle longitude="-4.620404" latitude="48.381438" radius="400">
+              I am a circle
+              </leaflet-circle>
+          </leaflet-map>
+        </div>
       </div>
     `;
   }
@@ -130,7 +144,6 @@ export class AdDetail extends PolymerElement {
     catch (err) {
       console.log('fetch failed', err);
     }
-    gfd
   }
 
   _suppress(){
