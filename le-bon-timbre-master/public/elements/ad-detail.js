@@ -20,6 +20,7 @@ export class AdDetail extends PolymerElement {
           padding: 20px;
           border: solid 1px black;
           min-height: 200px;
+          background: #FFFFFF;
         }
         .back {
           width: 50px;
@@ -65,7 +66,8 @@ export class AdDetail extends PolymerElement {
       <div id="[[ad.id]]" class="ad clearfix">
       <div id="top">
         <a id="back" href="#/home/ads-list">
-          <img class="pull-right back" alt="Retour à la liste">
+          <img class="pull-right back" src="pictures/backIcon.png" alt="Retour à la liste image">
+          Retour à la liste
         </a>
         <paper-button on-click="_suppress" disabled="[[isCreatorLogged]]" id="suppress" raised class="indigo">Supprimer mon annonce</paper-button>
       </div>
