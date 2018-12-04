@@ -139,6 +139,10 @@ export class createpostForm extends PolymerElement {
                 error-message="[[ErrMsg]]"></paper-input>
             <paper-input id="price" value="{{price}}" disabled="[[loading]]" type="number" label="[[InputPrice]]" required
                 error-message="[[ErrMsg]]"></paper-input>
+            <paper-input id="longitude" value="{{longitude}}" disabled="[[loading]]" type="number" label="[[InputLongitude]]" required
+                error-message="[[ErrMsg]]"></paper-input>
+            <paper-input id="latitude" value="{{latitude}}" disabled="[[loading]]" type="number" label="[[InputLatitude]]" required
+                error-message="[[ErrMsg]]"></paper-input>
             <input id="imgload"  disabled="[[loading]]" type="file" accept="image/*"  label="Ajouter image" on-value-changed="_onChange" required
                 error-message="[[ErrMsg]]"></input>
             <img id="outImage" alt="Image de l'annonce">
@@ -197,6 +201,15 @@ export class createpostForm extends PolymerElement {
         notify: true
       },
 
+      latitude: {
+        type: String,
+        notify: true
+      },
+
+      longitude: {
+        type: String,
+        notify: true
+      },
       /**
       * When true, all fields are disabled and the progress bar is visible
       */
@@ -231,6 +244,16 @@ export class createpostForm extends PolymerElement {
       InputPrice: {
         type: String,
         value: "Prix de mise en vente (en euros)"
+      },
+
+      InputLatitude: {
+        type: String,
+        value: "Position GPS : Latitude"
+      },
+
+      InputLongitude: {
+        type: String,
+        value: "Position GPS : Longitude"
       },
 
       /**
@@ -314,7 +337,9 @@ export class createpostForm extends PolymerElement {
         "description":this.description,
         "price":this.price,
         "user":this.username,
-        "id":id
+        "id":id,
+        "latitude":this.latitude,
+        "longitude":this.longitude
       }
 
 

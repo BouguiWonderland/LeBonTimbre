@@ -99,12 +99,12 @@ export class AdDetail extends PolymerElement {
           </li>
         </ul>
         <div id="map">
-          <leaflet-map longitude="-4.620404" latitude="48.381438" zoom="15">
-            <leaflet-marker longitude="-4.620404" latitude="48.381438">
-              I am a marker
+          <leaflet-map longitude=[[ad.longitude]] latitude=[[ad.latitude]] zoom="14">
+            <leaflet-marker longitude=[[ad.longitude]] latitude=[[ad.latitude]]>
+              marker
               </leaflet-marker>
-              <leaflet-circle longitude="-4.620404" latitude="48.381438" radius="400">
-              I am a circle
+              <leaflet-circle longitude=[[ad.longitude]] latitude=[[ad.latitude]] radius="300">
+              circle
               </leaflet-circle>
           </leaflet-map>
         </div>
