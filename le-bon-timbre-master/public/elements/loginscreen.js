@@ -213,6 +213,12 @@ class PaperLoginscreen extends PolymerElement {
 
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    console.log("ici");
+    this._getData();
+  }
+
   async _getData() {
     try {
       const response = await fetch('http://localhost:3000/users');

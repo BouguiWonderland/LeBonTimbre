@@ -156,6 +156,12 @@ class AdsList extends PolymerElement {
 
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    this._getData();
+  }
+
   async _getData() {
     try {
       const response = await fetch('http://localhost:3000/ads');

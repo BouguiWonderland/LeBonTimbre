@@ -130,6 +130,7 @@ export class AdDetail extends PolymerElement {
     catch (err) {
       console.log('fetch failed', err);
     }
+    gfd
   }
 
   _suppress(){
