@@ -54,6 +54,18 @@ export class AppInside extends PolymerElement {
         background-color: #4CAF50;
         color: white;
       }
+
+      #deconnectBtn{
+        float:right;
+        margin-top: auto;
+        margin-bottom: auto;
+        background-color: #1F3045;
+        color: white;
+        --paper-button-raised-keyboard-focus: {
+            background-color: #FE9D0F !important;
+            color:  white !important;
+        }
+      }
       </style>
 
       <app-location route="{{route}}" use-hash-as-path></app-location>
@@ -63,8 +75,9 @@ export class AppInside extends PolymerElement {
          <a id="createBtn" href="#/home/create-ad">Créer annonce</a>
          <a id="profileBtn"href="#/home/profile">Mon profil</a>
          <a id="aboutBtn" href="#/home/about">Aide</a>
-         <b id="userdata" >[[userdata]]</a>
-         <paper-button on-click="_deconnect" disabled="[[loading]]" id="createAdBtn" raised class="indigo">Déconnexion</paper-button>
+         <paper-button on-click="_deconnect" disabled="[[loading]]" id="deconnectBtn" raised class="indigo">Déconnexion</paper-button>
+         <b id="userdata" >[[userdata]]</b>
+
       </div>
 
       <app-route route="[[route]]" pattern="/home/ads-list" active="{{homeActive}}"></app-route>
