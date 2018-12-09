@@ -1,13 +1,22 @@
 var express = require('express');
 var fs = require('fs');
+var MongoClient = require("mongodb").MongoClient;
+
+
 var app = express();
 var port = 3000;
+var db;
 
-let usersData=[];
 
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
+
+
+MongoClient.connect('mongodb://localhost:27017/', function (err, client) {
+  if (err) throw err;
+  db = client.db("data");
+});
 
 app.get('/', function(req, res) {
   console.log(req.method, req.url);
@@ -17,129 +26,117 @@ app.get('/', function(req, res) {
 app.post('/connect', function(req, res) {
    console.log(req.method, req.url);
 
-   var dataUsers =[];
-   dataUsers= fs.readFileSync('data/users.json');
-   dataUsers=JSON.parse(dataUsers);
+   let usersData=[];
 
+   db.collection("users").find({}).toArray(function (error, results) {
+       if (error) throw error;
+       usersData=results;
 
-   let c=0;
-   for(let i=0;i<dataUsers.length;i++){
-     if(dataUsers[i].username==req.body.username)c++;
-     if(dataUsers[i].password==req.body.password)c++;
-     if(c==2)break;
-     c=0;
-   }
+       let c=0;
+       for(let i=0;i<usersData.length;i++){
+         if(usersData[i].username==req.body.username)c++;
+         if(usersData[i].password==req.body.password)c++;
+         if(c==2)break;
+         c=0;
+       }
 
-   let logged="false";
-   if(c==2){logged="true";}
+       let logged="false";
+       if(c==2){logged="true";}
 
-   res.send(logged);
+       res.send(logged);
+        });
 
 });
 
 app.post('/submit/registration', function(req, res) {
    console.log(req.method, req.url);
 
-   var dataUsers =[];
-   dataUsers= fs.readFileSync('data/users.json');
-   dataUsers=JSON.parse(dataUsers);
+   var usersData=[];
 
-   //Vérification que le pseudo n'est pas utilisé
-   let c=0;
-   for(let i=0;i<dataUsers.length;i++){
-     if(dataUsers[i].username==req.body.username){
-       c++;
-       break;
-     }
-     c=0;
-   }
+   db.collection("users").find({}).toArray(function (error, results) {
+       if (error) throw error;
+       usersData=results;
+       console.log(results);
 
-   let ok="true";
-   if(c==1){ok="false";}
-   else{
-     var data = fs.readFileSync('data/users.json');
-     console.log(data);
-     var usersData = JSON.parse(data);
-     usersData.push({
-       "username":req.body.username,
-       "password":req.body.password,
-       "firstname":req.body.firstname,
-       "name":req.body.name,
-       "email":req.body.email
+
+       //Vérification que le pseudo n'est pas utilisé
+       let c=0;
+       for(let i=0;i<usersData.length;i++){
+         if(usersData[i].username==req.body.username){
+           c++;
+           break;
+         }
+         c=0;
+       }
+
+       let ok="true";
+       if(c==1){ok="false";}
+       else{
+        let newUser={
+          "username":req.body.username,
+          "password":req.body.password,
+          "firstname":req.body.firstname,
+          "name":req.body.name,
+          "email":req.body.email
+        };
+        db.collection("users").insertOne(newUser, null, function (error, results) {
+        if (error) throw error;
+
+        console.log("Le document a bien été inséré");
+          });
+        }
+        res.send(ok);
+
      });
-
-     fs.writeFileSync("data/users.json", JSON.stringify(usersData),'utf8');
-   }
-
-   res.send(ok);
 
 });
 
 app.get('/user/:id', function(req, res) {
    console.log(req.method, req.url);
 
-   var dataUsers = fs.readFileSync('data/users.json');
-   var users = JSON.parse(dataUsers);
-
-   let a;
-   let i;
-   for(i=0;i<users.length;i++){
-     if(users[i].username==req.params.id)a=i;
-   }
-
-   res.send(users[a]);
+   db.collection("users").findOne({username:req.params.id}, function(err, result) {
+    if (err) throw err;
+    res.send(result);
+    console.log(result);
+  });
 
 });
 
 app.get('/ads', function(req, res) {
    console.log(req.method, req.url);
-   res.sendFile(__dirname + '/data/ads.json');
+
+   db.collection("ads").find({}).toArray(function (error, results) {
+       if (error) throw error;
+       res.send(results);
+     });
 });
 
 app.get('/ad/:id', function(req, res) {
    console.log(req.method, req.url);
-   res.sendFile(__dirname + '/data/ads/ad-'+req.params.id+'.json');
+
+   db.collection("ads").findOne({id:parseInt(req.params.id)},function (error, result) {
+       if (error) throw error;
+       console.log(result);
+       res.send(result);
+     });
+
 });
 
 
 
 app.get('/ad/rm/:id', function(req, res) {
    console.log(req.method, req.url);
-   var data = fs.readFileSync('data/ads.json');
-   console.log(data);
-   var adsData = JSON.parse(data);
-   var newData=[];
-   for(let i=0;i<adsData.length;i++){
-     if(adsData[i].id!=req.params.id){
-       newData.push(adsData[i]);
-     }
-   }
-   fs.writeFileSync("data/ads.json", JSON.stringify(newData),'utf8');
+
+   db.collection("ads").deleteOne({id:parseInt(req.params.id)}, function(err, result) {
+    if (err) throw err;
+    console.log("Ad deleted");
+  });
+
 });
 
 
 app.post('/ads', function (req, res) {
-
-//OUVERTURE ET AJOUT DE DONNÉES DANS LE FICHIER JSON users.json
-
-  var data = fs.readFileSync('data/ads.json');
-  console.log(data);
-  var adsData = JSON.parse(data);
-  adsData.push({
-    "title":req.body.title,
-    "year":req.body.year,
-    "country":req.body.country,
-    "description":req.body.description,
-    "price":req.body.price,
-    "user":req.body.user,
-    "id":req.body.id,
-    "latitude":req.body.latitude,
-    "longitude":req.body.longitude
-  });
-
-  fs.writeFileSync("data/ads.json", JSON.stringify(adsData),'utf8');
-
-  var adData={
+  var newAd={
     "title":req.body.title,
     "year":req.body.year,
     "country":req.body.country,
@@ -151,7 +148,11 @@ app.post('/ads', function (req, res) {
     "longitude":req.body.longitude
   };
 
-  fs.writeFileSync("data/ads/ad-"+req.body.id+".json", JSON.stringify(adData),'utf8');
+  db.collection("ads").insertOne(newAd, null, function (error, results) {
+  if (error) throw error;
+
+  console.log("Annonce ajoutée");
+  });
 
 });
 
