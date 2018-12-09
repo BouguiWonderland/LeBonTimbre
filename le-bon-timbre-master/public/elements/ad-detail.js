@@ -9,17 +9,18 @@ export class AdDetail extends PolymerElement {
       <style include="granite-bootstrap"></style>
       <style>
         leaflet-map{
-          height:300px;
+          height:400px;
           width:100%;
+          border: solid 1px #4CAF50;
         }
         .ad {
-          width:800px;
+          width:70%;
           margin-left: auto;
           margin-right: auto;
-          margin-top: 100px;
+          margin-top: 3%;
           padding: 20px;
           border: solid 1px black;
-          min-height: 200px;
+          min-height: 50%;
           background: #FFFFFF;
         }
         .back {
@@ -36,7 +37,7 @@ export class AdDetail extends PolymerElement {
 
         ul.specs > li{
           display: inline-block;
-          width: 200px;
+          width: 49%;
           vertical-align: top;
         }
 
@@ -47,10 +48,19 @@ export class AdDetail extends PolymerElement {
 
         ul.specs dt {
           font-weight: bold;
+          text-decoration: underline;
+          font-style: italic;
+          font-size: 120%;
         }
 
         h1 {
-          border-bottom: 1px solid gray;
+          border-bottom: 3px solid #4CAF50;
+          border-top: 3px solid #4CAF50;
+        }
+        .name {
+          font-family: OldPressItalic;
+          font-size:350%;
+          margin-top: 20px;
         }
         #suppress{
           float:right;

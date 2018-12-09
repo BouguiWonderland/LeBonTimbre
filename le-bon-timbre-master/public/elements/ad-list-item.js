@@ -14,15 +14,15 @@ export class AdListItem extends PolymerElement {
           margin: 10px;
           padding: 10px;
           border: solid 2px #4CAF50;
-          min-height: 150px;
+          min-height: 5%;
           background: #FFFFFF;
           @apply --shadow-elevation-12dp;
         }
-        .el-img {
-          max-height: 100px;
-        }
         .el-price {
           clear:both;
+        }
+        .el-name {
+          font-family:OldPressItalic;
         }
       </style>
       <div id="[[id]]" class="ad clearfix">
