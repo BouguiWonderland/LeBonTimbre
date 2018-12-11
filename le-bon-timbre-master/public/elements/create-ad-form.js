@@ -21,46 +21,8 @@ export class createpostForm extends PolymerElement {
     return html`
     <style>
 
-    .topnav {
-      background-color: #333;
-      overflow: hidden;
-    }
-
-/* Style the links inside the navigation bar */
-    .topnav a {
-      float: left;
-      margin-top: auto;
-      margin-bottom: auto;
-      color: #f2f2f2;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-size: 17px;
-    }
-
-    .topnav b {
-      float: right;
-      color: #f2f2f2;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-size: 17px;
-    }
-
-/* Change the color of links on hover */
-    .topnav a:hover {
-      background-color: #ddd;
-      color: black;
-    }
-
-/* Add a color to the active/current link */
-    .topnav a.active {
-      background-color: #4CAF50;
-      color: white;
-    }
-
       #createpostForm {
-          width: 450px;
+          width: 60%;
           height: 800px;
           margin-left: auto;
           margin-right: auto;
@@ -132,10 +94,19 @@ export class createpostForm extends PolymerElement {
     </style>
 
     <p align="center">
+
+
     <div id="createpostForm">
+
         <paper-progress disabled="[[!loading]]" indeterminate></paper-progress>
         <div id="createpostFormContent">
+        <div class="row">
+          <div class="col-md-4">
             <h1>[[title]]</h1>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1d347aed192e6bb85275790212521573e47bff93
             <div id="errorMsg">[[errorMsg]]</div>
             <paper-input id="titleP" value="{{titleP}}" disabled="[[loading]]" type="text" label="[[InputTitle]]" required
                 error-message="[[ErrMsg]]"></paper-input>
@@ -154,10 +125,19 @@ export class createpostForm extends PolymerElement {
             <input id="imgload"  disabled="[[loading]]" type="file" accept="image/*"  label="Ajouter image" required
                 error-message="[[ErrMsg]]"></input>
 
+<<<<<<< HEAD
             <paper-button on-click="_create" disabled="[[loading]]" id="createpostBtn" raised class="indigo">[[createpostBtnText]]</paper-button>
             <img id="outImage" src="" alt="Image de l'annonce">
+=======
+
         </div>
-    </div>
+
+    <div class="col-md-4">
+      <img id="outImage" src="" alt="Image de l'annonce">
+        <paper-button on-click="_create" disabled="[[loading]]" id="createpostBtn" raised class="indigo">[[createpostBtnText]]</paper-button>
+>>>>>>> 1d347aed192e6bb85275790212521573e47bff93
+        </div>
+    </div></div></div>
     </p>
 
   `;
