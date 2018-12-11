@@ -136,7 +136,6 @@ export class createpostForm extends PolymerElement {
         <paper-progress disabled="[[!loading]]" indeterminate></paper-progress>
         <div id="createpostFormContent">
             <h1>[[title]]</h1>
-            <img id="outImage" src="" alt="Image de l'annonce">
             <div id="errorMsg">[[errorMsg]]</div>
             <paper-input id="titleP" value="{{titleP}}" disabled="[[loading]]" type="text" label="[[InputTitle]]" required
                 error-message="[[ErrMsg]]"></paper-input>
@@ -156,6 +155,7 @@ export class createpostForm extends PolymerElement {
                 error-message="[[ErrMsg]]"></input>
 
             <paper-button on-click="_create" disabled="[[loading]]" id="createpostBtn" raised class="indigo">[[createpostBtnText]]</paper-button>
+            <img id="outImage" src="" alt="Image de l'annonce">
         </div>
     </div>
     </p>
@@ -372,7 +372,7 @@ export class createpostForm extends PolymerElement {
          headers: {'Accept': 'application/json,text/plain',
                     'Content-Type': 'application/json'
                   },
-         body: JSON.stringify(user)
+         body: JSON.stringify(adData)
       }
 
       try {
