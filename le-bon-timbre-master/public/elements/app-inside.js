@@ -94,7 +94,7 @@ export class AppInside extends PolymerElement {
       </template>
 
       <template is="dom-if" if="{{adActive}}">
-        <ad-detail id="[[adId.id]]"></ad-detail>
+        <ad-detail _id="[[adId.id]]"></ad-detail>
       </template>
     `;
   }

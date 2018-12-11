@@ -73,7 +73,7 @@ export class AdDetail extends PolymerElement {
 
       </style>
 
-      <div id="[[ad.id]]" class="ad clearfix">
+      <div id="[[ad._id]]" class="ad clearfix">
       <div id="top">
         <a id="back" href="#/home/ads-list">
           <img class="pull-right back" src="pictures/backIcon.png" alt="Retour à la liste image">
@@ -82,6 +82,7 @@ export class AdDetail extends PolymerElement {
         <paper-button on-click="_suppress" disabled="[[isCreatorLogged]]" id="suppress" raised class="indigo">Supprimer mon annonce</paper-button>
       </div>
         <h1 class="name">[[ad.title]]</h1>
+        <img id="outImage" src=[[ad.img]] alt="Image de l'annonce">
         <p class="description">Description de la pièce en vente : \n[[ad.description]]</p>
 
         <ul class="specs">
@@ -127,7 +128,7 @@ export class AdDetail extends PolymerElement {
 
   static get properties() {
     return {
-      id: {
+      _id: {
         type: String,
         observer: '_onIdChange',
       },
@@ -147,7 +148,7 @@ export class AdDetail extends PolymerElement {
 
   async _onIdChange() {
     try {
-      const response = await fetch('http://localhost:3000/ad/'+this.id);
+      const response = await fetch('http://localhost:3000/ad/'+this._id);
       this.ad = await response.json();
       this.username=readCookie("userConnected");
       if(this.ad.user==this.username)this.isCreatorLogged=false;
@@ -159,7 +160,7 @@ export class AdDetail extends PolymerElement {
   }
 
   _suppress(){
-    fetch('http://localhost:3000/ad/rm/'+this.id);
+    fetch('http://localhost:3000/ad/rm/'+this._id);
     document.location.href="#/home/ads-list";
   }
 }

@@ -1,13 +1,15 @@
 var express = require('express');
 var fs = require('fs');
+var bodyParser = require('body-parser');
 var MongoClient = require("mongodb").MongoClient;
+var ObjectId = require('mongodb').ObjectID;
 
 
 var app = express();
 var port = 3000;
 var db;
 
-
+app.use(bodyParser({limit: '50mb'}));
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
@@ -17,7 +19,6 @@ MongoClient.connect('mongodb://localhost:27017/', function (err, client) {
   if (err) throw err;
   db = client.db("data");
 });
-
 app.get('/', function(req, res) {
   console.log(req.method, req.url);
   res.sendFile(__dirname + '/public/index.html');
@@ -114,7 +115,7 @@ app.get('/ads', function(req, res) {
 app.get('/ad/:id', function(req, res) {
    console.log(req.method, req.url);
 
-   db.collection("ads").findOne({id:parseInt(req.params.id)},function (error, result) {
+   db.collection("ads").findOne({_id:ObjectId(req.params.id)},function (error, result) {
        if (error) throw error;
        console.log(result);
        res.send(result);
@@ -127,7 +128,7 @@ app.get('/ad/:id', function(req, res) {
 app.get('/ad/rm/:id', function(req, res) {
    console.log(req.method, req.url);
 
-   db.collection("ads").deleteOne({id:parseInt(req.params.id)}, function(err, result) {
+   db.collection("ads").deleteOne({_id:ObjectId(req.params.id)}, function(err, result) {
     if (err) throw err;
     console.log("Ad deleted");
   });
@@ -136,23 +137,24 @@ app.get('/ad/rm/:id', function(req, res) {
 
 
 app.post('/ads', function (req, res) {
-  var newAd={
-    "title":req.body.title,
-    "year":req.body.year,
-    "country":req.body.country,
-    "description":req.body.description,
-    "price":req.body.price,
-    "user":req.body.user,
-    "id":req.body.id,
-    "latitude":req.body.latitude,
-    "longitude":req.body.longitude
-  };
 
-  db.collection("ads").insertOne(newAd, null, function (error, results) {
-  if (error) throw error;
+      var newAd={
+        "title":req.body.title,
+        "year":req.body.year,
+        "country":req.body.country,
+        "description":req.body.description,
+        "price":req.body.price,
+        "user":req.body.user,
+        "latitude":req.body.latitude,
+        "longitude":req.body.longitude,
+        "img":req.body.img}
 
-  console.log("Annonce ajoutée");
-  });
+
+      db.collection("ads").insertOne(newAd, null, function (error, results) {
+      if (error) throw error;
+
+      console.log("Annonce ajoutée");
+      });
 
 });
 

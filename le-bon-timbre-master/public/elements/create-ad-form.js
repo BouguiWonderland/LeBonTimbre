@@ -121,6 +121,14 @@ export class createpostForm extends PolymerElement {
           color: var(--login-error-label-color, var(--error-color));
           @apply --paper-font-menu;
       }
+
+      #outImage{
+        width:100px;
+        margin-left: auto;
+        margin-right: auto;
+        height:100px;
+        float: right;
+      }
     </style>
 
     <p align="center">
@@ -128,6 +136,7 @@ export class createpostForm extends PolymerElement {
         <paper-progress disabled="[[!loading]]" indeterminate></paper-progress>
         <div id="createpostFormContent">
             <h1>[[title]]</h1>
+            <img id="outImage" src="" alt="Image de l'annonce">
             <div id="errorMsg">[[errorMsg]]</div>
             <paper-input id="titleP" value="{{titleP}}" disabled="[[loading]]" type="text" label="[[InputTitle]]" required
                 error-message="[[ErrMsg]]"></paper-input>
@@ -143,9 +152,9 @@ export class createpostForm extends PolymerElement {
                 error-message="[[ErrMsg]]"></paper-input>
             <paper-input id="latitude" value="{{latitude}}" disabled="[[loading]]" type="number" label="[[InputLatitude]]" required
                 error-message="[[ErrMsg]]"></paper-input>
-            <input id="imgload"  disabled="[[loading]]" type="file" accept="image/*"  label="Ajouter image" on-value-changed="_onChange" required
+            <input id="imgload"  disabled="[[loading]]" type="file" accept="image/*"  label="Ajouter image" required
                 error-message="[[ErrMsg]]"></input>
-            <img id="outImage" alt="Image de l'annonce">
+
             <paper-button on-click="_create" disabled="[[loading]]" id="createpostBtn" raised class="indigo">[[createpostBtnText]]</paper-button>
         </div>
     </div>
@@ -279,7 +288,6 @@ export class createpostForm extends PolymerElement {
     super();
 
     this.ads = [];
-    this._getData();
     this.username=readCookie("userConnected");
     if(!this.username)document.location.href="http://localhost:3000/";
     this.name=readCookie("Name");
@@ -287,48 +295,65 @@ export class createpostForm extends PolymerElement {
 
     this.userdata="Bienvenue "+this.firstname+" "+this.name+", alias "+this.username+" !"
 
-  }
 
-  async _getData() {
-    try {
-      const response = await fetch('http://localhost:3000/ads');
-      console.log('fetch');
-      this.ads = await response.json();
-      console.log(this.ads);
-    }
-    catch (err) {
-      console.log('fetch failed', err);
-    }
+
+
   }
 
   ready() {
     super.ready();
     var self = this;
 
+    this.$.imgload.addEventListener("change", function(){
+      var file = this.files[0];
+      var reader = new FileReader();
+      reader.onload = function (event) {
+        var image = new Image();
+        image.src = event.target.result;
+        image.onload = function(){
+          //
+
+          var maxWidth = 1024,
+              maxHeight = 1024,
+              imageWidth = image.width,
+              imageHeight = image.height;
+
+
+          if (imageWidth > imageHeight) {
+            if (imageWidth > maxWidth) {
+              imageHeight *= maxWidth / imageWidth;
+              imageWidth = maxWidth;
+            }
+          }
+          else {
+            if (imageHeight > maxHeight) {
+              imageWidth *= maxHeight / imageHeight;
+              imageHeight = maxHeight;
+            }
+          }
+
+          var canvas = document.createElement('canvas');
+          canvas.width = imageWidth;
+          canvas.height = imageHeight;
+          image.width = imageWidth;
+          image.height = imageHeight;
+          var ctx = canvas.getContext("2d");
+          ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
+
+          self.$.outImage.src =canvas.toDataURL(file.type);
+        }
+      }
+        if(file){
+          reader.readAsDataURL(file);
+        }else{
+        }
+      });
+
+
   }
 
   _create(){
     if(this.$.titleP.validate() && this.$.year.validate() && this.$.country.validate() && this.$.description.validate() && this.$.price.validate()){
-      let id=0;
-      let lowId=false;
-      let tabId=[];
-      if(this.ads.length!=0){
-        for(let i=0;i<this.ads.length;i++){
-          if(this.ads[i].id>=this.ads.length){
-            lowId=true;
-          }
-          tabId.push(this.ads[i].id);
-        }
-
-        for(let i=0;i<this.ads.length;i++){
-          if(!tabId.includes(i)){
-            id=i;
-            break;
-          }
-        }
-      }
-
-
 
       let adData ={
         "title":this.titleP,
@@ -337,65 +362,60 @@ export class createpostForm extends PolymerElement {
         "description":this.description,
         "price":this.price,
         "user":this.username,
-        "id":id,
         "latitude":this.latitude,
-        "longitude":this.longitude
+        "longitude":this.longitude,
+        "img":this.$.outImage.src
       }
 
+      let request={
+         method:'POST',
+         headers: {'Accept': 'application/json,text/plain',
+                    'Content-Type': 'application/json'
+                  },
+         body: JSON.stringify(user)
+      }
 
-      var xhr = new XMLHttpRequest();
-      var url="http://localhost:3000/ads"
-      xhr.open("POST", url, true);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var json = JSON.parse(xhr.responseText);
-            //console.log(json.email + ", " + json.password);
+      try {
+        fetch('http://localhost:3000/ads',request);
+        this.dispatchEvent(new CustomEvent('register-btn-click', { bubbles: true, composed: true }));
+        document.location.href="#/home/ads-list";
+      }
+        catch (err) {
+          console.log('fetch failed', err);
+          this.errorMsg = "Serveur injoignable, rééssayez svp"
         }
-      };
-      var data = JSON.stringify(adData);
-      xhr.send(data);
 
-      this.dispatchEvent(new CustomEvent('register-btn-click', { bubbles: true, composed: true }));
-      document.location.href="#/home/ads-list";
+
     }
   }
 
-  _onChange (){
-    document.getElementById("outImage").src =this.$.imgload.value;
-    /*console.log(evt);
-    var tgt = evt.target||window.event.srcElement,
-       files = this.$.imgload.value;
-       console.log(files);
-    // FileReader support
-    if (FileReader && files && files.length) {
-        var fr = new FileReader();
-        console.log("2");
-        fr.onload = function () {
-            document.getElementById("outImage").src = fr.result;
-        }
-        console.log("3");
-        fr.readAsDataURL(files[0]);
-    }
-
-    // Not supported
-    else {
-        // fallback -- perhaps submit the input to an iframe and temporarily store
-        // them on the server until the user's session ends.
-    }*/
-
-  /*  var selectedFile = evt.target.files[0];
+  readURL(){
+    var file = this.$.imgload.files[0];
     var reader = new FileReader();
+    reader.onloadend = function(){
+      this.$.outImage.src = "url(" + reader.result + ")";
+    }
+    if(file){
+      reader.readAsDataURL(file);
+    }else{
+    }
+  }
 
-    var imgtag = document.getElementById("outImage");
-    imgtag.title = selectedFile.name;
+  _onChanged(){
+       var preview = document.querySelector('img'); //selects the query named img
+       var file    = document.querySelector('input[type=image/*]').files[0]; //sames as here
+       var reader  = new FileReader();
 
-    reader.onload = function(event) {
-    imgtag.src = event.target.result;
-  };
+       reader.onloadend = function () {
+           preview.src = reader.result;
+       }
 
-  reader.readAsDataURL(selectedFile);*/
-}
+       if (file) {
+           reader.readAsDataURL(file); //reads the data as a URL
+       } else {
+           preview.src = "";
+       }
+     }
 
   _deconnect(){
     createCookie("userConnected","",-1);

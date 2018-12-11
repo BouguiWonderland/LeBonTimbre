@@ -89,10 +89,11 @@ class AdsList extends PolymerElement {
               id="adList" is="dom-repeat"
               items="[[ads]]" filter="_adFilter" sort="_adSorter" >
             <ad-list-item
-                id="[[item.id]]"
+                id="[[item._id]]"
                 name="[[item.title]]"
                 description="[[item.description]]"
-                price="[[item.price]]">
+                price="[[item.price]]"
+                img="[[item.img]]">
             </ad-list-item>
           </template>
         </div>
