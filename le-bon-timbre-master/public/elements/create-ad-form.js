@@ -44,7 +44,9 @@ export class createpostForm extends PolymerElement {
 
       #createpostBtn {
           margin-top: 30px;
-          float: bottom;
+          margin-left: 20%;
+
+          width:60%;
           background-color: var(--login-btn-background-color, var(--paper-indigo-500));
           color: var(--login-btn-text-color, white);
           --paper-button-raised-keyboard-focus: {
@@ -55,17 +57,21 @@ export class createpostForm extends PolymerElement {
 
           @apply --login-btn;
       }
+      #imgload{
+        margin-top: 30px;
+        margin-left:  20px;
+
+        width:80%;
+      }
 
       #createpostBtn[disabled] {
           background-color: var(--login-btn-disabled-background-color, var(--paper-indigo-100));
-
       }
 
 
       h1 {
           @apply --paper-font-display1;
           margin: 0;
-          float:center;
           @apply --login-title;
       }
 
@@ -87,22 +93,22 @@ export class createpostForm extends PolymerElement {
       }
 
       #outImage{
-        width:100px;
-        margin-left: auto;
+        width:95%;
+        margin-left: 20px;
         margin-right: auto;
-        height:100px;
-        float: top;
+        max-height:40%;
+        float: right;
       }
-      #imgload{
-        float:bottom;
+      .column{
+        float:left;
+        width: 50%;
       }
-      .column {
-          float: left;
-          width: 50%;
-        }
-      .row{
-        float:top;
-        height:50%;
+      .container{
+        display:table;
+      }
+      #c1{
+        margin-top: 5%;
+        margin-bottom: 5%;
       }
 
     </style>
@@ -111,14 +117,14 @@ export class createpostForm extends PolymerElement {
 
 
 
-    <div id="createpostForm">
+    <div id="createpostForm" class="container">
 
         <paper-progress disabled="[[!loading]]" indeterminate></paper-progress>
         <div id="createpostFormContent">
             <h1>[[title]]</h1>
-            <div id="errorMsg">[[errorMsg]]</div>
+            <a id="errorMsg">[[errorMsg]]</a>
             <div class="row">
-              <div class="column">
+              <div class="column" id="c1">
                 <paper-input id="titleP" value="{{titleP}}" disabled="[[loading]]" type="text" label="[[InputTitle]]" required
                     error-message="[[ErrMsg]]"></paper-input>
                 <paper-input id="year" value="{{year}}" disabled="[[loading]]" type="number" label="[[InputYear]]" required
@@ -135,22 +141,18 @@ export class createpostForm extends PolymerElement {
                     error-message="[[ErrMsg]]"></paper-input>
               </div>
               <div class="column">
-                <div class="row">
-                  <img id="outImage" src="" alt="Image de l'annonce">
-                </div>
-                <div class="row">
-                  <input id="imgload"  disabled="[[loading]]" type="file" accept="image/*"  label="Ajouter image" required
+                <img id="outImage" src="./pictures/noVisual.png" alt="Image de l'annonce">
+                <input id="imgload"  disabled="[[loading]]" type="file" accept="image/*"  label="Ajouter image" required
                     error-message="[[ErrMsg]]"></input>
-                  <paper-button on-click="_create" disabled="[[loading]]" id="createpostBtn" raised class="indigo">[[createpostBtnText]]</paper-button>
-                </div>
-
 
               </div>
             </div>
-
-
+            <div class="row">
+            <paper-button on-click="_create" disabled="[[loading]]" id="createpostBtn" raised class="indigo">[[createpostBtnText]]</paper-button>
+            </div>
+            </div>
         </div>
-    </div></div></div>
+      </div>
     </p>
 
   `;
@@ -297,6 +299,46 @@ export class createpostForm extends PolymerElement {
     super.ready();
     var self = this;
 
+    var image = new Image();
+    image.src ="./pictures/noVisual.png";
+
+  /*  image.onload = function(){
+      var maxWidth = self.$.outImage.clientWidth,
+          maxHeight = self.id.clientHeight,//self.$.outImage.clientHeight,
+          imageWidth = image.width,
+          imageHeight = image.height;
+
+      console.log(maxWidth);
+      console.log(maxHeight);
+      console.log(imageWidth);
+      console.log(imageHeight);
+
+
+      if (imageWidth > imageHeight) {
+        if (imageWidth > maxWidth) {
+          imageHeight *= maxWidth / imageWidth;
+          imageWidth = maxWidth;
+        }
+      }
+      else {
+        if (imageHeight > maxHeight) {
+          imageWidth *= maxHeight / imageHeight;
+          imageHeight = maxHeight;
+        }
+      }
+
+      var canvas = document.createElement('canvas');
+      canvas.width = imageWidth;
+      canvas.height = imageHeight;
+      image.width = imageWidth;
+      image.height = imageHeight;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
+
+      var type=image.src.split("/")[1].split(";")[0];
+      self.$.outImage.src =canvas.toDataURL(type);
+  }*/
+
     this.$.imgload.addEventListener("change", function(){
       var file = this.files[0];
       var reader = new FileReader();
@@ -306,8 +348,8 @@ export class createpostForm extends PolymerElement {
         image.onload = function(){
           //
 
-        var  maxWidth = self.$.outImage.clientWidth,
-              maxHeight = self.id.clientHeight,
+          var maxWidth = self.$.outImage.clientWidth,
+              maxHeight = 300,
               imageWidth = image.width,
               imageHeight = image.height;
 

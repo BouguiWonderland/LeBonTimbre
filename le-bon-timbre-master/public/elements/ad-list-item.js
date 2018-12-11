@@ -28,14 +28,24 @@ export class AdListItem extends PolymerElement {
           width:100%;
           height:100%;
         }
+        #price{
+          float:right;
+          float:bottom;
+        }
+        #data{
+          width:100%;
+          height:100%;
+        }
+
+        
       </style>
       <div id="[[id]]" class="ad clearfix">
-        <div class="container">
+        <div class="container" id="annonce">
           <div class="row">
-            <div class="col-md-8">
+            <div id="data" class="col-md-8">
               <a href="#/home/ad/[[id]]"><h2 class="el-name">[[name]]</h2></a>
               <p class="el-description">[[description]]</p>
-              <p class="float-right el-price">Prix: [[price]]€</p>
+              <p id="price">Prix: [[price]]€</p>
             </div>
             <div class="col-md-4">
               <img id="outImage" src="" alt="Image de l'annonce">

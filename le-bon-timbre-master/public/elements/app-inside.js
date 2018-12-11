@@ -22,19 +22,6 @@ export class AppInside extends PolymerElement {
         overflow: hidden;
       }
 
-      footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height : 5%;
-        background-color: #333;
-        text-align:center;
-        color:#4CAF50;
-        font-family:OldPressItalic;
-        font-size:130%;
-      }
-
   /* Style the links inside the navigation bar */
       .topnav a {
         float: left;
@@ -90,6 +77,7 @@ export class AppInside extends PolymerElement {
          <a id="aboutBtn" href="#/home/about">Aide</a>
          <paper-button on-click="_deconnect" disabled="[[loading]]" id="deconnectBtn" raised class="indigo">Déconnexion</paper-button>
          <b id="userdata" >[[userdata]]</b>
+
       </div>
 
       <app-route route="[[route]]" pattern="/home/ads-list" active="{{homeActive}}"></app-route>
@@ -98,29 +86,19 @@ export class AppInside extends PolymerElement {
 
 
       <template is="dom-if" if="{{homeActive}}" restamp>
-        <ads-list title="LeBonTimbre - Accueil"></ads-list>
+        <ads-list title="LeBonTimbre - Accueil" ></ads-list>
       </template>
 
-      <template is="dom-if" if="{{createAdActive}}">
+      <template is="dom-if" if="{{createAdActive}}"restamp>
         <create-ad-form title="Créer annonce"></create-ad-form>
       </template>
 
-      <template is="dom-if" if="{{adActive}}">
+      <template is="dom-if" if="{{adActive}}" restamp>
         <ad-detail _id="[[adId.id]]"></ad-detail>
       </template>
-
-      <footer>
-        LeBonTimbre<br/>
-        Bouguennec Florian - Capitaine Ewen
-      </footer>
     `;
   }
 
-_displayAdsList(){
-  console.log("_displayAdsList");
-  console.log(this.route.path);
-  return this.route.path === '/home/ads-list';
-}
 
   static get properties() {
     return {
@@ -142,7 +120,6 @@ _displayAdsList(){
   connectedCallback() {
     super.connectedCallback();
 
-this.test=false;
     if (!this.route.path) {
       this.route = { ... this.route, path: '/login' }
     }

@@ -82,35 +82,44 @@ export class AdDetail extends PolymerElement {
         <paper-button on-click="_suppress" disabled="[[isCreatorLogged]]" id="suppress" raised class="indigo">Supprimer mon annonce</paper-button>
       </div>
         <h1 class="name">[[ad.title]]</h1>
-        <img id="outImage" src=[[ad.img]] alt="Image de l'annonce">
-        <p class="description">Description de la pièce en vente : \n[[ad.description]]</p>
 
-        <ul class="specs">
-          <li>
-            <dl>
-              <dt>Prix</dt>
-              <dd>[[ad.price]]€</dd>
-            </dl>
-          </li>
-          <li>
-            <dl>
-              <dt>Auteur de l'annonce</dt>
-              <dd>[[ad.user]]</dd>
-            </dl>
-          </li>
-          <li>
-            <dl>
-              <dt>Pays</dt>
-              <dd>[[ad.country]]</dd>
-            </dl>
-          </li>
-          <li>
-            <dl>
-              <dt>Année</dt>
-              <dd>[[ad.year]]</dd>
-            </dl>
-          </li>
-        </ul>
+        <div class="row">
+          <div class="col-md-8">
+          <p class="description">Description de la pièce en vente : \n[[ad.description]]</p>
+
+          <ul class="specs">
+            <li>
+              <dl>
+                <dt>Prix</dt>
+                <dd>[[ad.price]]€</dd>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dt>Auteur de l'annonce</dt>
+                <dd>[[ad.user]]</dd>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dt>Pays</dt>
+                <dd>[[ad.country]]</dd>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dt>Année</dt>
+                <dd>[[ad.year]]</dd>
+              </dl>
+            </li>
+          </ul>
+          </div>
+          <div class="col-md-4">
+            <img id="outImage" src="" alt="Image de l'annonce">
+          </div>
+        </div>
+
+
         <div id="map">
           <leaflet-map longitude=[[ad.longitude]] latitude=[[ad.latitude]] zoom="14">
             <leaflet-marker longitude=[[ad.longitude]] latitude=[[ad.latitude]]>
@@ -153,10 +162,11 @@ export class AdDetail extends PolymerElement {
       this.username=readCookie("userConnected");
       if(this.ad.user==this.username)this.isCreatorLogged=false;
       else this.isCreatorLogged=true;
+      console.log("inside");
 
       var self=this;
       var image = new Image();
-      image.src =this.img;
+      image.src =this.ad.img;
 
       image.onload = function(){
         var maxWidth = self.$.outImage.clientWidth,

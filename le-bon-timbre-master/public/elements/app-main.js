@@ -24,7 +24,7 @@ export class AppMain extends PolymerElement {
       <app-route route="[[route]]" pattern="/home" active="{{homeActive}}"></app-route>
 
       <template is="dom-if" if="{{logScreenActive}}">
-        <paper-loginscreen title="LeBonTimbre - Connexion" isvisible="[[adId]]"></paper-loginscreen>
+        <paper-loginscreen title="LeBonTimbre - Connexion"></paper-loginscreen>
       </template>
 
       <template is="dom-if" if="{{regScreenActive}}">
