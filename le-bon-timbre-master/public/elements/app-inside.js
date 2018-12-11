@@ -22,6 +22,19 @@ export class AppInside extends PolymerElement {
         overflow: hidden;
       }
 
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height : 5%;
+        background-color: #333;
+        text-align:center;
+        color:#4CAF50;
+        font-family:OldPressItalic;
+        font-size:130%;
+      }
+
   /* Style the links inside the navigation bar */
       .topnav a {
         float: left;
@@ -95,6 +108,11 @@ export class AppInside extends PolymerElement {
       <template is="dom-if" if="{{adActive}}">
         <ad-detail _id="[[adId.id]]"></ad-detail>
       </template>
+
+      <footer>
+        LeBonTimbre<br/>
+        Bouguennec Florian - Capitaine Ewen
+      </footer>
     `;
   }
 
