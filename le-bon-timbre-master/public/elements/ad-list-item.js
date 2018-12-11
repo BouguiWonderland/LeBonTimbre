@@ -14,7 +14,7 @@ export class AdListItem extends PolymerElement {
           margin: 10px;
           padding: 10px;
           border: solid 2px #4CAF50;
-          min-height: 5%;
+          min-height: 25%;
           background: #FFFFFF;
           @apply --shadow-elevation-12dp;
         }
@@ -24,16 +24,24 @@ export class AdListItem extends PolymerElement {
         .el-name {
           font-family:OldPressItalic;
         }
-        .#outImage{
-          width:100px;
-          height:100px;
+        #outImage{
+          width:100%;
+          height:100%;
         }
       </style>
       <div id="[[id]]" class="ad clearfix">
-        <a href="#/home/ad/[[id]]"><h2 class="el-name">[[name]]</h2></a>
-        <img id="outImage" src="" alt="Image de l'annonce">
-        <p class="el-description">[[description]]</p>
-        <p class="float-right el-price">Prix: [[price]]€</p>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8">
+              <a href="#/home/ad/[[id]]"><h2 class="el-name">[[name]]</h2></a>
+              <p class="el-description">[[description]]</p>
+              <p class="float-right el-price">Prix: [[price]]€</p>
+            </div>
+            <div class="col-md-4">
+              <img id="outImage" src="" alt="Image de l'annonce">
+            </div>
+          </div>
+        </div>
       </div>
     `;
   }
@@ -69,10 +77,15 @@ export class AdListItem extends PolymerElement {
     image.src =this.img;
 
     image.onload = function(){
-      var maxWidth = 400,
-          maxHeight = 300,
+      var maxWidth = self.$.outImage.clientWidth,
+          maxHeight = self.id.clientHeight,//self.$.outImage.clientHeight,
           imageWidth = image.width,
           imageHeight = image.height;
+
+      console.log(maxWidth);
+      console.log(maxHeight);
+      console.log(imageWidth);
+      console.log(imageHeight);
 
 
       if (imageWidth > imageHeight) {
