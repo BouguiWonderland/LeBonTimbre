@@ -71,11 +71,6 @@ export class AdDetail extends PolymerElement {
           color:white;
         }
 
-        #outImage{
-          width:100%;
-          height:100%;
-        }
-
       </style>
 
       <div id="[[ad._id]]" class="ad clearfix">
@@ -86,10 +81,8 @@ export class AdDetail extends PolymerElement {
         </a>
         <paper-button on-click="_suppress" disabled="[[isCreatorLogged]]" id="suppress" raised class="indigo">Supprimer mon annonce</paper-button>
       </div>
-      <h1 class="name">[[ad.title]]</h1>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8">
+        <h1 class="name">[[ad.title]]</h1>
+        <img id="outImage" src=[[ad.img]] alt="Image de l'annonce">
         <p class="description">Description de la pièce en vente : \n[[ad.description]]</p>
 
         <ul class="specs">
@@ -118,12 +111,6 @@ export class AdDetail extends PolymerElement {
             </dl>
           </li>
         </ul>
-        </div>
-        <div class="col-md-4">
-          <img id="outImage" src=[[ad.img]] alt="Image de l'annonce">
-        </div>
-        </div>
-        </div>
         <div id="map">
           <leaflet-map longitude=[[ad.longitude]] latitude=[[ad.latitude]] zoom="14">
             <leaflet-marker longitude=[[ad.longitude]] latitude=[[ad.latitude]]>
@@ -159,8 +146,6 @@ export class AdDetail extends PolymerElement {
   }
 
 
-
-
   async _onIdChange() {
     try {
       const response = await fetch('http://localhost:3000/ad/'+this._id);
@@ -171,11 +156,11 @@ export class AdDetail extends PolymerElement {
 
       var self=this;
       var image = new Image();
-      image.src =this.ad.img;
+      image.src =this.img;
 
       image.onload = function(){
         var maxWidth = self.$.outImage.clientWidth,
-            maxHeight =self.$.ad.clientHeight/2,
+            maxHeight = 300,//self.$.outImage.clientHeight,
             imageWidth = image.width,
             imageHeight = image.height;
 
@@ -209,6 +194,7 @@ export class AdDetail extends PolymerElement {
         var type=image.src.split("/")[1].split(";")[0];
         self.$.outImage.src =canvas.toDataURL(type);
       }
+
     }
     catch (err) {
       console.log('fetch failed', err);

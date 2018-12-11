@@ -132,19 +132,8 @@ class AdsList extends PolymerElement {
         type: String,
         computed: '_getCurrentAds(ads,filterText)',
       },
-
-      isvisible: {
-        type: Boolean,
-        observer: '_onChanged' ,
-      }
-    }
-  }
-
-  _onChanged(newValue, oldValue) {
-    if(newValue){
-        this._getData();
-    }
   };
+}
 
   constructor() {
     super();

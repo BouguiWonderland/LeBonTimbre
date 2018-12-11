@@ -77,7 +77,6 @@ export class AppInside extends PolymerElement {
          <a id="aboutBtn" href="#/home/about">Aide</a>
          <paper-button on-click="_deconnect" disabled="[[loading]]" id="deconnectBtn" raised class="indigo">Déconnexion</paper-button>
          <b id="userdata" >[[userdata]]</b>
-
       </div>
 
       <app-route route="[[route]]" pattern="/home/ads-list" active="{{homeActive}}"></app-route>
@@ -85,8 +84,8 @@ export class AppInside extends PolymerElement {
       <app-route route="[[route]]" pattern="/home/ad/:id" data="{{adId}}" active="{{adActive}}"></app-route>
 
 
-      <template is="dom-if" if="{{homeActive}}">
-        <ads-list title="LeBonTimbre - Accueil" isVisible="{{homeActive}}"></ads-list>
+      <template is="dom-if" if="{{homeActive}}" restamp>
+        <ads-list title="LeBonTimbre - Accueil"></ads-list>
       </template>
 
       <template is="dom-if" if="{{createAdActive}}">
@@ -99,6 +98,11 @@ export class AppInside extends PolymerElement {
     `;
   }
 
+_displayAdsList(){
+  console.log("_displayAdsList");
+  console.log(this.route.path);
+  return this.route.path === '/home/ads-list';
+}
 
   static get properties() {
     return {
@@ -120,6 +124,7 @@ export class AppInside extends PolymerElement {
   connectedCallback() {
     super.connectedCallback();
 
+this.test=false;
     if (!this.route.path) {
       this.route = { ... this.route, path: '/login' }
     }

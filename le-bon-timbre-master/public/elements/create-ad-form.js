@@ -23,7 +23,7 @@ export class createpostForm extends PolymerElement {
 
       #createpostForm {
           width: 60%;
-          height: 800px;
+          height: 600px;
           margin-left: auto;
           margin-right: auto;
           margin-top: 25px;
@@ -44,7 +44,7 @@ export class createpostForm extends PolymerElement {
 
       #createpostBtn {
           margin-top: 30px;
-          float: right;
+          float: bottom;
           background-color: var(--login-btn-background-color, var(--paper-indigo-500));
           color: var(--login-btn-text-color, white);
           --paper-button-raised-keyboard-focus: {
@@ -58,12 +58,14 @@ export class createpostForm extends PolymerElement {
 
       #createpostBtn[disabled] {
           background-color: var(--login-btn-disabled-background-color, var(--paper-indigo-100));
+
       }
 
 
       h1 {
           @apply --paper-font-display1;
           margin: 0;
+          float:center;
           @apply --login-title;
       }
 
@@ -89,53 +91,64 @@ export class createpostForm extends PolymerElement {
         margin-left: auto;
         margin-right: auto;
         height:100px;
-        float: right;
+        float: top;
       }
+      #imgload{
+        float:bottom;
+      }
+      .column {
+          float: left;
+          width: 50%;
+        }
+      .row{
+        float:top;
+        height:50%;
+      }
+
     </style>
 
     <p align="center">
+
 
 
     <div id="createpostForm">
 
         <paper-progress disabled="[[!loading]]" indeterminate></paper-progress>
         <div id="createpostFormContent">
-        <div class="row">
-          <div class="col-md-4">
             <h1>[[title]]</h1>
-<<<<<<< HEAD
-=======
-
->>>>>>> 1d347aed192e6bb85275790212521573e47bff93
             <div id="errorMsg">[[errorMsg]]</div>
-            <paper-input id="titleP" value="{{titleP}}" disabled="[[loading]]" type="text" label="[[InputTitle]]" required
-                error-message="[[ErrMsg]]"></paper-input>
-            <paper-input id="year" value="{{year}}" disabled="[[loading]]" type="number" label="[[InputYear]]" required
-                error-message="[[ErrMsg]]"></paper-input>
-            <paper-input id="country" value="{{country}}" disabled="[[loading]]" type="text" label="[[InputCountry]]" required
-                error-message="[[ErrMsg]]"></paper-input>
-            <paper-input id="description" value="{{description}}" disabled="[[loading]]" type="text" label="[[InputDescription]]" required
-                error-message="[[ErrMsg]]"></paper-input>
-            <paper-input id="price" value="{{price}}" disabled="[[loading]]" type="number" label="[[InputPrice]]" required
-                error-message="[[ErrMsg]]"></paper-input>
-            <paper-input id="longitude" value="{{longitude}}" disabled="[[loading]]" type="number" label="[[InputLongitude]]" required
-                error-message="[[ErrMsg]]"></paper-input>
-            <paper-input id="latitude" value="{{latitude}}" disabled="[[loading]]" type="number" label="[[InputLatitude]]" required
-                error-message="[[ErrMsg]]"></paper-input>
-            <input id="imgload"  disabled="[[loading]]" type="file" accept="image/*"  label="Ajouter image" required
-                error-message="[[ErrMsg]]"></input>
+            <div class="row">
+              <div class="column">
+                <paper-input id="titleP" value="{{titleP}}" disabled="[[loading]]" type="text" label="[[InputTitle]]" required
+                    error-message="[[ErrMsg]]"></paper-input>
+                <paper-input id="year" value="{{year}}" disabled="[[loading]]" type="number" label="[[InputYear]]" required
+                    error-message="[[ErrMsg]]"></paper-input>
+                <paper-input id="country" value="{{country}}" disabled="[[loading]]" type="text" label="[[InputCountry]]" required
+                    error-message="[[ErrMsg]]"></paper-input>
+                <paper-input id="description" value="{{description}}" disabled="[[loading]]" type="text" label="[[InputDescription]]" required
+                    error-message="[[ErrMsg]]"></paper-input>
+                <paper-input id="price" value="{{price}}" disabled="[[loading]]" type="number" label="[[InputPrice]]" required
+                    error-message="[[ErrMsg]]"></paper-input>
+                <paper-input id="longitude" value="{{longitude}}" disabled="[[loading]]" type="number" label="[[InputLongitude]]" required
+                    error-message="[[ErrMsg]]"></paper-input>
+                <paper-input id="latitude" value="{{latitude}}" disabled="[[loading]]" type="number" label="[[InputLatitude]]" required
+                    error-message="[[ErrMsg]]"></paper-input>
+              </div>
+              <div class="column">
+                <div class="row">
+                  <img id="outImage" src="" alt="Image de l'annonce">
+                </div>
+                <div class="row">
+                  <input id="imgload"  disabled="[[loading]]" type="file" accept="image/*"  label="Ajouter image" required
+                    error-message="[[ErrMsg]]"></input>
+                  <paper-button on-click="_create" disabled="[[loading]]" id="createpostBtn" raised class="indigo">[[createpostBtnText]]</paper-button>
+                </div>
 
-<<<<<<< HEAD
-            <paper-button on-click="_create" disabled="[[loading]]" id="createpostBtn" raised class="indigo">[[createpostBtnText]]</paper-button>
-            <img id="outImage" src="" alt="Image de l'annonce">
-=======
 
-        </div>
+              </div>
+            </div>
 
-    <div class="col-md-4">
-      <img id="outImage" src="" alt="Image de l'annonce">
-        <paper-button on-click="_create" disabled="[[loading]]" id="createpostBtn" raised class="indigo">[[createpostBtnText]]</paper-button>
->>>>>>> 1d347aed192e6bb85275790212521573e47bff93
+
         </div>
     </div></div></div>
     </p>
@@ -293,8 +306,8 @@ export class createpostForm extends PolymerElement {
         image.onload = function(){
           //
 
-          var maxWidth = 1024,
-              maxHeight = 1024,
+        var  maxWidth = self.$.outImage.clientWidth,
+              maxHeight = self.id.clientHeight,
               imageWidth = image.width,
               imageHeight = image.height;
 
