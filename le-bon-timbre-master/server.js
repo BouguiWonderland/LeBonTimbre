@@ -103,6 +103,28 @@ app.get('/user/:id', function(req, res) {
 
 });
 
+app.post('/update/:id', function(req, res) {
+    console.log(req.method, req.url);
+
+    db.collection("users").findOne({username:req.params.id}, function(err, result) {
+    if (err) throw err;
+    if(req.body.firstname!="")result.firstname=req.body.firstname;
+    if(req.body.name!="")result.name=req.body.name;
+    if(req.body.password!="")result.password=req.body.password;
+    if(req.body.email!="")result.email=req.body.email;
+
+    var myquery = { username: req.params.id };
+    var newvalues = { $set: { firstname: result.firstname, name:result.name, password:result.password, email:result.email } };
+
+    db.collection("users").updateOne(myquery, newvalues, function(err, res) {
+    if (err) throw err;
+    console.log("1 document updated");
+
+    });
+  });
+
+});
+
 app.get('/ads', function(req, res) {
    console.log(req.method, req.url);
 

@@ -31,7 +31,7 @@ export class AppMain extends PolymerElement {
         <register-screen title="LeBonTimbre - Inscription"></register-screen>
       </template>
 
-      <template is="dom-if" if="{{homeActive}}">
+      <template is="dom-if" if="{{homeActive}}" restamp>
         <app-inside></app-inside>
       </template>
 

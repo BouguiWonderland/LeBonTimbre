@@ -37,7 +37,7 @@ export class AdListItem extends PolymerElement {
           height:100%;
         }
 
-        
+
       </style>
       <div id="[[id]]" class="ad clearfix">
         <div class="container" id="annonce">
@@ -88,7 +88,7 @@ export class AdListItem extends PolymerElement {
 
     image.onload = function(){
       var maxWidth = self.$.outImage.clientWidth,
-          maxHeight = self.id.clientHeight,//self.$.outImage.clientHeight,
+          maxHeight = 400,//self.$.outImage.clientHeight,
           imageWidth = image.width,
           imageHeight = image.height;
 

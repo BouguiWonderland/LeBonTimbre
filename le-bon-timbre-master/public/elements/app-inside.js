@@ -11,6 +11,7 @@ import './create-ad-form.js';
 import './ads-list.js';
 import './ad-detail.js';
 import './about.js';
+import './profile.js';
 
 
 export class AppInside extends PolymerElement {
@@ -85,6 +86,7 @@ export class AppInside extends PolymerElement {
       <app-route route="[[route]]" pattern="/home/create-ad" active="{{createAdActive}}"></app-route>
       <app-route route="[[route]]" pattern="/home/ad/:id" data="{{adId}}" active="{{adActive}}"></app-route>
       <app-route route="[[route]]" pattern="/home/about" active="{{aboutActive}}"></app-route>
+      <app-route route="[[route]]" pattern="/home/profile" active="{{profileActive}}"></app-route>
 
 
       <template is="dom-if" if="{{homeActive}}" restamp>
@@ -100,7 +102,11 @@ export class AppInside extends PolymerElement {
       </template>
 
       <template is="dom-if" if="{{aboutActive}}" restamp>
-        <help-about></help_about>
+        <help-about></help-about>
+      </template>
+
+      <template is="dom-if" if="{{profileActive}}" restamp>
+        <profile-screen></profile-screen>
       </template>
     `;
   }

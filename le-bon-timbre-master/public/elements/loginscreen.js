@@ -247,7 +247,7 @@ class PaperLoginscreen extends PolymerElement {
           createCookie("userConnected",this.username,1/48);
           console.log("Found");
         }
-          else{
+        if(isOk=="false"){
             console.log("Not found");
             this.errorMsg = "Pseudo ou mot de passe invalide"
           }

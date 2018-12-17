@@ -302,43 +302,6 @@ export class createpostForm extends PolymerElement {
     var image = new Image();
     image.src ="./pictures/noVisual.png";
 
-  /*  image.onload = function(){
-      var maxWidth = self.$.outImage.clientWidth,
-          maxHeight = self.id.clientHeight,//self.$.outImage.clientHeight,
-          imageWidth = image.width,
-          imageHeight = image.height;
-
-      console.log(maxWidth);
-      console.log(maxHeight);
-      console.log(imageWidth);
-      console.log(imageHeight);
-
-
-      if (imageWidth > imageHeight) {
-        if (imageWidth > maxWidth) {
-          imageHeight *= maxWidth / imageWidth;
-          imageWidth = maxWidth;
-        }
-      }
-      else {
-        if (imageHeight > maxHeight) {
-          imageWidth *= maxHeight / imageHeight;
-          imageHeight = maxHeight;
-        }
-      }
-
-      var canvas = document.createElement('canvas');
-      canvas.width = imageWidth;
-      canvas.height = imageHeight;
-      image.width = imageWidth;
-      image.height = imageHeight;
-      var ctx = canvas.getContext("2d");
-      ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
-
-      var type=image.src.split("/")[1].split(";")[0];
-      self.$.outImage.src =canvas.toDataURL(type);
-  }*/
-
     this.$.imgload.addEventListener("change", function(){
       var file = this.files[0];
       var reader = new FileReader();

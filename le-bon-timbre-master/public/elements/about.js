@@ -20,8 +20,9 @@ export class helpAbout extends PolymerElement {
       }
       .col-md-5 {
         margin-top:5%;
+        margin-bottom:5%;
         margin-left:1%;
-        margin-right:1%;
+        margin-right:7.2%;
         background-color:white;
         border: solid 1px #4CAF50;
         float: left;
