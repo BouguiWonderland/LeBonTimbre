@@ -55,6 +55,13 @@ class Profile extends PolymerElement {
           @apply --register-btn;
       }
 
+      #Btn {
+          margin-top: 50px;
+          float: left;
+          background-color: white;
+          color:black;
+      }
+
       h1 {
           @apply --paper-font-display1;
           margin: 0;
@@ -93,7 +100,8 @@ class Profile extends PolymerElement {
             <paper-input id="nameInput" value="{{name}}" disabled="[[loading]]" type="text" label="[[nameInputLabel]]"></paper-input>
             <paper-input id="emailInput" value="{{email}}" disabled="[[loading]]" type="text" label="[[emailInputLabel]]"></paper-input>
 
-            <paper-button on-click="_submit" disabled="[[loading]]" id="Btn" raised class="indigo">Valider</paper-button>
+            <paper-button on-click="_submit" disabled="[[loading]]" id="validBtn" raised class="indigo">Valider</paper-button>
+            <paper-button on-click="_kill" disabled="[[loading]]" id="Btn" raised class="indigo">Supprimer mon compte</paper-button>
             <slot name=""></slot>
         </div>
     </div>
@@ -185,6 +193,13 @@ class Profile extends PolymerElement {
     this.username=readCookie("userConnected");
   }
 
+async _kill(){
+  fetch('http://localhost:3000/kill/'+this.username);
+  createCookie("userConnected","",-1);
+  document.location.href="#/login";
+
+}
+
   async _submit() {
     let newPass="";
     let newFirstname="";
@@ -214,9 +229,6 @@ class Profile extends PolymerElement {
       newEmail=this.email;
     }
 
-
-
-
       try {
 
         let userData ={
@@ -236,7 +248,7 @@ class Profile extends PolymerElement {
         }
 
           fetch('http://localhost:3000/update/'+this.username,request);
-          document.location.href="#/home";
+          document.location.href="#/home/ads-list";
         }
       catch (err) {
         console.log('fetch failed', err);

@@ -85,7 +85,7 @@ export class AdDetail extends PolymerElement {
 
         <div class="row">
           <div class="col-md-8">
-          <p class="description">Description de la pièce en vente : \n[[ad.description]]</p>
+          <p class="description">Description de la pièce en vente :<br>[[ad.description]]</p>
 
           <ul class="specs">
             <li>

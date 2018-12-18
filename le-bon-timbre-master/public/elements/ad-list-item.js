@@ -60,6 +60,7 @@ export class AdListItem extends PolymerElement {
     return {
       id: {
         type: String,
+        observer: 'onChanged'
       },
       title: {
         type: String,
@@ -79,16 +80,19 @@ export class AdListItem extends PolymerElement {
     }
   }
 
-
   ready(){
     super.ready();
+    this.onChanged();
+}
+
+  onChanged(){
     var self=this;
     var image = new Image();
     image.src =this.img;
 
     image.onload = function(){
       var maxWidth = self.$.outImage.clientWidth,
-          maxHeight = 400,//self.$.outImage.clientHeight,
+          maxHeight = 300,//self.$.outImage.clientHeight,
           imageWidth = image.width,
           imageHeight = image.height;
 
@@ -122,7 +126,7 @@ export class AdListItem extends PolymerElement {
       var type=image.src.split("/")[1].split(";")[0];
       self.$.outImage.src =canvas.toDataURL(type);
   }
-}
+  }
 }
 
 // Associate the new class with an element name

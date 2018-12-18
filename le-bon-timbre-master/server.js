@@ -19,6 +19,7 @@ MongoClient.connect('mongodb://localhost:27017/', function (err, client) {
   if (err) throw err;
   db = client.db("data");
 });
+
 app.get('/', function(req, res) {
   console.log(req.method, req.url);
   res.sendFile(__dirname + '/public/index.html');
@@ -122,6 +123,13 @@ app.post('/update/:id', function(req, res) {
 
     });
   });
+  });
+
+app.get('/kill/:id', function(req, res) {
+      console.log(req.method, req.url);
+      db.collection("users").deleteOne({username:req.params.id}, function(err, result) {
+      if (err) throw err;
+  });
 
 });
 
@@ -130,6 +138,9 @@ app.get('/ads', function(req, res) {
 
    db.collection("ads").find({}).toArray(function (error, results) {
        if (error) throw error;
+       for(let i=0;i<results.length;i++){
+         results[i].price=parseInt(results[i].price);
+       }
        res.send(results);
      });
 });
@@ -165,7 +176,7 @@ app.post('/ads', function (req, res) {
         "year":req.body.year,
         "country":req.body.country,
         "description":req.body.description,
-        "price":req.body.price,
+        "price":parseInt(req.body.price),
         "user":req.body.user,
         "latitude":req.body.latitude,
         "longitude":req.body.longitude,
@@ -189,4 +200,4 @@ app.use('/@webcomponents',express.static(__dirname+"/node_modules/@webcomponents
 app.use('/@granite-elements',express.static(__dirname+"/node_modules/@granite-elements"));
 
 app.listen(port);
-console.log("Listening to http://localhost:3000/ ...")
+console.log("Listening to http://localhost:3000/ ...");
